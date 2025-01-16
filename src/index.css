@@ -2,3 +2,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.chatBg {
+  background: radial-gradient(ellipse at 38% 0%, #055e68, #272727);
+}
+body::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 3px;
+  background-color: transparent;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  margin: 15px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-lightBlue rounded-full;
+}
+
+.chat-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  background-color: transparent;
+}
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-lightBlue rounded-full;
+}
