@@ -2,27 +2,23 @@ import { ImProfile } from "react-icons/im";
 import { MdPermMedia } from "react-icons/md";
 import { FiPhone, FiVideo } from "react-icons/fi";
 import { forwardRef } from "react";
-import { motion } from "framer-motion";
 
 const CurrentChatsProfiles = forwardRef(({ props }, ref) => {
   return (
-    <motion.div
-      initial={{ y: -450 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3, type: "spring", damping: 15 }}
-      className="absolute z-50 flex bg-transparent w-[450px] max-h-96 border-lightBlue rounded-xl left-2 top-1 shadow-xl shadow-black/50 overflow-hidden"
+    <div
+      className="absolute z-50 flex bg-transparent w-96 md:w-[450px] md:max-h-96 max-h-[700px] border-lightBlue rounded-xl left-2 top-1 shadow-xl shadow-black/50 overflow-hidden"
       ref={ref}
       onClick={(e) => e.stopPropagation()}
     >
       {/* kiri */}
       <div className="px-1 py-3 text-white bg-canvas shadow-lightBlue">
         <ul className="space-y-3 ">
-          <li className="flex gap-2 px-5 py-2 text-sm duration-150 rounded-md hover:bg-lightBlueHover/50">
-            <ImProfile className="mr-2 text-lg" />
+          <li className="flex gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5 hover:bg-lightBlueHover/50">
+            <ImProfile className="mr-2 text-md md:text-lg" />
             Overview
           </li>
-          <li className="flex gap-2 px-5 py-2 text-sm duration-150 rounded-md hover:bg-lightBlueHover/50">
-            <MdPermMedia className="mr-2 text-lg" />
+          <li className="flex gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5 hover:bg-lightBlueHover/50">
+            <MdPermMedia className="mr-2 text-md md:text-lg" />
             Media
           </li>
         </ul>
@@ -39,7 +35,7 @@ const CurrentChatsProfiles = forwardRef(({ props }, ref) => {
             Kouruko Waguri
           </h2>
           {/* button VC / TLPN */}
-          <div className="flex w-full gap-3 px-5">
+          <div className="flex w-full gap-3 ">
             <button className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md bg-canvas-600 hover:bg-canvas-600/50">
               <FiVideo className="text-xl text-white" />
               <span className="text-sm text-white">Video</span>
@@ -83,7 +79,7 @@ const CurrentChatsProfiles = forwardRef(({ props }, ref) => {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 });
 

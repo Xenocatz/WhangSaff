@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import avatar from "../../../assets/userProfileIMG/kaoruko.jpeg";
 import CurrentChatsProfiles from "../../layout/profiles";
-import { CiLight } from "react-icons/ci";
+import { useSelector } from "react-redux";
+import { setUser } from "../../../redux/userSlice";
+import { current } from "@reduxjs/toolkit";
 
 export default function ChatsHeader() {
+  const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
   const [userDetailVisible, setUserDetailVisible] = useState(false);
   const userDetailRef = useRef(null);
 
@@ -31,12 +33,15 @@ export default function ChatsHeader() {
       onClick={handleUserDetail}
     >
       {userDetailVisible && <CurrentChatsProfiles ref={userDetailRef} />}
-      <ContactProfile />
+      <ContactProfile
+        name={currentRoom?.username}
+        avatar={currentRoom?.avatar}
+      />
     </div>
   );
 }
 
-const ContactProfile = () => {
+const ContactProfile = ({ name, avatar }) => {
   return (
     <div className="flex items-center gap-3 px-5 py-3 ">
       <img
@@ -46,7 +51,7 @@ const ContactProfile = () => {
       />
       <div>
         <h2 className="text-xl font-bold text-white select-none lg:text-lg lg:font-semibold font-poppins">
-          Kaoruko Waguri
+          {name}
         </h2>
         <p className="text-sm text-white/75 ">Online</p>
       </div>

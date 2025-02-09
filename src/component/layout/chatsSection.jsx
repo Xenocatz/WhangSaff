@@ -1,6 +1,5 @@
 import ChatsHeader from "../group/chats/chatsHeader";
-import ChatsInput from "../group/chats/chatsInput";
-import ChatsMain from "../group/chats/chatsMain";
+import ChatsRoom from "../group/chats/chatsRoom";
 import bgChat from "../../assets/bgChats/bg1.jpg";
 
 export default function ChatsSection() {
@@ -12,8 +11,7 @@ export default function ChatsSection() {
       }}
     >
       <ChatsHeader />
-      <ChatsMain />
-      <ChatsInput />
+      <ChatsRoom />
     </section>
   );
 }

@@ -1,34 +1,58 @@
 import { motion } from "framer-motion";
 import LoginBg from "../assets/bgChats/bgcmprs.webp";
 import InputForm from "../component/element/InputForm";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import { useState } from "react";
+import { login } from "../service/AuthService";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { listenToAuthChanges } from "../redux/userSlice";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const Navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await login({ email, password });
+      console.log("Login result:", result);
+
+      if (result) {
+        setEmail("");
+        Navigate("/whangsaff", { replace: true });
+        dispatch(listenToAuthChanges());
+      }
+
+      setPassword("");
+    } catch (error) {
+      toast.error("Error logging in: " + error.message);
+    }
+  };
 
   const loginVariant = {
     in: {
-      opacity: 1,
+      opacity: 0,
     },
     stay: {
       opacity: 1,
       transition: { duration: 1, staggerChildren: 0.2, delayChildren: 0.5 },
     },
     out: {
-      opacity: 1,
+      opacity: 0,
       transition: { duration: 1, staggerChildren: 0.1 },
     },
   };
-
   const loginItemsVariants = {
     in: { x: -900, transition: { duration: 0.5, ease: "easeInOut" } },
     stay: { x: 0, transition: { duration: 0.5, ease: "easeInOut" } },
     out: { x: -900, transition: { duration: 0.5, ease: "easeInOut" } },
   };
-
   const welcomeVariant = {
     in: {
       opacity: 1,
@@ -42,7 +66,6 @@ const LoginPage = () => {
       transition: { duration: 1, staggerChildren: 0.1 },
     },
   };
-
   const welcomeItemsVariants = {
     in: { x: 900, transition: { duration: 0.5, ease: "easeInOut" } },
     stay: { x: 0, transition: { duration: 0.5, ease: "easeInOut" } },
@@ -54,7 +77,7 @@ const LoginPage = () => {
         style={{ backgroundImage: `url(${LoginBg})` }}
         className="h-full w-full max-h-[1080px] max-w-[1920px] bg-center bg-cover overflow-hidden shadow-2xl "
       >
-        <div className="relative flex items-center justify-between h-full px-20 backdrop-blur-none bg-black/30">
+        <div className="relative flex items-center justify-center w-full h-full md:justify-between md:px-20 backdrop-blur-none bg-black/30">
           {/* bg animasi */}
           <motion.div
             animate={{
@@ -77,9 +100,8 @@ const LoginPage = () => {
             }}
             className="absolute w-[1920px] h-[1080px] top-0 left-0 bg-canvas "
           ></motion.div>
-
           {/* Login Form */}
-          <motion.div className="z-10 w-1/2">
+          <motion.div className="z-10 flex justify-center w-full md:justify-start md:w-1/2">
             <motion.div
               variants={loginVariant}
               initial="in"
@@ -89,7 +111,7 @@ const LoginPage = () => {
             >
               <motion.h1
                 variants={loginItemsVariants}
-                className="text-5xl font-bold text-center text-white"
+                className="text-4xl font-bold text-center text-white md:text-5xl"
               >
                 Login
               </motion.h1>
@@ -100,22 +122,25 @@ const LoginPage = () => {
                 exit="out"
                 className="flex flex-col mt-20 space-y-4"
               >
-                <motion.div
+                <motion.form
                   variants={loginItemsVariants}
-                  className="flex flex-col w-full mb-5 space-y-20"
+                  onSubmit={handleLogin}
+                  className="flex flex-col w-full space-y-20"
                 >
-                  {/* username */}
+                  {/* Email */}
                   <motion.div
                     variants={loginItemsVariants}
                     className="relative"
                   >
                     <InputForm
-                      label="Username"
-                      type="text"
-                      id="username "
+                      label="Email"
+                      type="email"
+                      id="email"
                       tipe="login"
+                      value={email}
+                      setValue={setEmail}
                     />
-                    <IoPerson className="absolute top-0 right-0 text-3xl text-white rounded-xl bg-black/10" />
+                    <IoPerson className="absolute top-0 right-0 text-2xl text-white md:text-3xl rounded-xl bg-black/10" />
                   </motion.div>
                   {/* password */}
                   <motion.div
@@ -127,28 +152,32 @@ const LoginPage = () => {
                       type={!showPassword ? "password" : "text"}
                       id="password"
                       tipe="login"
+                      value={password}
+                      setValue={setPassword}
                     />
                     <button
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute top-0 right-0 text-3xl text-white rounded-full bg-black/10"
+                      type="button"
+                      className="absolute top-0 right-0 text-2xl text-white rounded-full md:text-3xl bg-black/10"
                     >
                       {!showPassword ? (
-                        <FaEyeSlash className="text-3xl text-white" />
+                        <FaEyeSlash className="text-white " />
                       ) : (
-                        <FaEye className="text-3xl text-white" />
+                        <FaEye className="text-white" />
                       )}
                     </button>
                   </motion.div>
-                </motion.div>
-                <motion.button
-                  variants={loginItemsVariants}
-                  className="px-2 py-3 text-2xl font-semibold text-white bg-blue-500 rounded-full"
-                >
-                  Login
-                </motion.button>
+                  <motion.button
+                    variants={loginItemsVariants}
+                    type="submit"
+                    className="px-2 py-2 text-lg font-semibold text-white bg-blue-500 rounded-full md:py-3 md:text-2xl"
+                  >
+                    Login
+                  </motion.button>
+                </motion.form>
                 <motion.p
                   variants={loginItemsVariants}
-                  className="text-center text-white"
+                  className="text-sm text-center text-white md:text-base"
                 >
                   Belum punya akun?{" "}
                   <Link to="/register" className="text-lightBlue">
@@ -159,7 +188,7 @@ const LoginPage = () => {
             </motion.div>
           </motion.div>
           {/* Welcome */}
-          <div className="z-10 flex flex-col items-end justify-center w-1/2 ">
+          <div className="z-10 flex-col items-end justify-center hidden w-1/2 md:flex ">
             <motion.div
               variants={welcomeVariant}
               initial="in"

@@ -1,5 +1,12 @@
-import avatar from "../../assets/userProfileIMG/blank-image.png";
-const Contact = ({ nama, chats, chatList, lastMessage }) => {
+import defaultAvatar from "../../assets/userProfileIMG/blank-image.png";
+const Contact = ({
+  nama,
+  chats,
+  chatList,
+  lastMessageTimeStamp,
+  avatar,
+  onclick,
+}) => {
   return (
     <div
       className={`flex gap-2 items-start justify-between px-2 py-3 rounded-xl  ${
@@ -7,10 +14,11 @@ const Contact = ({ nama, chats, chatList, lastMessage }) => {
           ? "lg:hover:bg-lightBlue/5 hover:scale-105 group duration-300"
           : ""
       }`}
+      onClick={onclick}
     >
       <div className="flex items-center gap-3 ">
         <img
-          src={avatar}
+          src={avatar || defaultAvatar}
           alt=""
           className="object-cover rounded-full h-14 w-14 lg:w-12 lg:h-12"
         />
@@ -22,7 +30,7 @@ const Contact = ({ nama, chats, chatList, lastMessage }) => {
         </span>
       </div>
       <p className="text-xs select-none text-white/75 lg:text-xs">
-        {lastMessage}
+        {lastMessageTimeStamp}
       </p>
     </div>
   );

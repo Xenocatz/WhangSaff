@@ -1,18 +1,58 @@
 import { motion } from "framer-motion";
 import RegisterBg from "../assets/bgChats/bg2.jpg";
 import InputForm from "../component/element/InputForm";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import { useState } from "react";
 import { MdEmail } from "react-icons/md";
+import { register } from "../service/AuthService";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [avatar, setAvatar] = useState({ file: null, url: null });
+
+  const Navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      if (!username || !email || !password || !avatar.file) {
+        alert("Please fill all fields and upload an avatar.");
+        return;
+      }
+
+      const result = await register({ username, email, password, avatar });
+      console.log("Registration result:", result);
+
+      Navigate("/login", { replace: true });
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setAvatar({ file: null, url: null });
+    } catch (error) {
+      alert("Error registering user: " + error.message);
+    }
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setAvatar({ file, url });
+    }
+  };
+  const date = new Date();
+  const handleTest = () => {
+    console.log(date);
+  };
 
   const loginVariant = {
     in: {
-      opacity: 1,
+      opacity: 0,
     },
     stay: {
       opacity: 1,
@@ -23,13 +63,11 @@ const RegisterPage = () => {
       transition: { duration: 1, staggerChildren: 0.1 },
     },
   };
-
   const loginItemsVariants = {
     in: { x: 900, transition: { duration: 0.5, ease: "easeInOut" } },
     stay: { x: 0, transition: { duration: 0.5, ease: "easeInOut" } },
     out: { x: 900, transition: { duration: 0.5, ease: "easeInOut" } },
   };
-
   const welcomeVariant = {
     in: {
       opacity: 1,
@@ -43,7 +81,6 @@ const RegisterPage = () => {
       transition: { duration: 1, staggerChildren: 0.1 },
     },
   };
-
   const welcomeItemsVariants = {
     in: { x: -900, transition: { duration: 0.5, ease: "easeInOut" } },
     stay: { x: 0, transition: { duration: 0.5, ease: "easeInOut" } },
@@ -55,7 +92,7 @@ const RegisterPage = () => {
         style={{ backgroundImage: `url(${RegisterBg})` }}
         className="h-full w-full max-h-[1080px] max-w-[1920px] bg-center bg-cover overflow-hidden shadow-2xl "
       >
-        <div className="relative flex flex-row-reverse items-center justify-between h-full px-20 bg-black/30">
+        <div className="relative flex flex-row-reverse items-center justify-between h-full md:px-20 bg-black/30">
           {/* bg animasi */}
           <motion.div
             animate={{
@@ -78,9 +115,8 @@ const RegisterPage = () => {
             }}
             className="absolute w-[1920px] h-[1080px] top-0 right-0 bg-darkRed "
           ></motion.div>
-
-          {/* Login Form */}
-          <motion.div className="z-10 flex justify-end w-1/2">
+          {/* register Form */}
+          <motion.div className="z-10 flex justify-center w-full md:justify-end md:w-1/2">
             <motion.div
               variants={loginVariant}
               initial="in"
@@ -90,7 +126,7 @@ const RegisterPage = () => {
             >
               <motion.h1
                 variants={loginItemsVariants}
-                className="text-5xl font-bold text-center text-white"
+                className="text-4xl font-bold text-center text-white md:text-5xl"
               >
                 Register
               </motion.h1>
@@ -101,22 +137,47 @@ const RegisterPage = () => {
                 exit="out"
                 className="flex flex-col mt-20 space-y-4"
               >
-                <motion.div
+                <motion.form
                   variants={loginItemsVariants}
-                  className="flex flex-col w-full mb-5 space-y-20"
+                  onSubmit={handleRegister}
+                  className="flex flex-col w-full mb-5 space-y-16"
                 >
                   {/* username */}
                   <motion.div
                     variants={loginItemsVariants}
-                    className="relative"
+                    className="relative flex items-end "
                   >
+                    {/* avatar */}
+                    <label
+                      htmlFor="avatar"
+                      className="flex cursor-pointer w-28"
+                    >
+                      <input
+                        type="file"
+                        id="avatar"
+                        accept=".jpg, .jpeg, .png"
+                        onChange={handleAvatarChange}
+                        hidden
+                      />
+                      <img
+                        src={
+                          avatar.url
+                            ? avatar.url
+                            : "/src/assets/userProfileIMG/blank-image.png"
+                        }
+                        alt=""
+                        className="object-cover rounded-full shadow-xl w-14 h-14 md:size-20 "
+                      />
+                    </label>
                     <InputForm
                       label="Username"
                       type="text"
                       id="username"
                       tipe="register"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                     />
-                    <IoPerson className="absolute top-0 right-0 text-3xl text-white rounded-xl bg-black/10" />
+                    <IoPerson className="absolute right-0 text-2xl text-white top-4 md:top-8 md:text-3xl rounded-xl bg-black/10" />
                   </motion.div>
                   {/* email */}
                   <motion.div
@@ -128,8 +189,10 @@ const RegisterPage = () => {
                       type="text"
                       id="email"
                       tipe="register"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
-                    <MdEmail className="absolute top-0 right-0 text-3xl text-white rounded-xl bg-black/10" />
+                    <MdEmail className="absolute top-0 right-0 text-2xl text-white md:text-3xl rounded-xl bg-black/10" />
                   </motion.div>
                   {/* password */}
                   <motion.div
@@ -141,28 +204,33 @@ const RegisterPage = () => {
                       type={!showPassword ? "password" : "text"}
                       id="password"
                       tipe="register"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute top-0 right-0 text-3xl text-white rounded-full bg-black/10"
+                      type="button"
+                      className="absolute top-0 right-0 text-2xl text-white rounded-full md:text-3xl bg-black/10"
                     >
                       {!showPassword ? (
-                        <FaEyeSlash className="text-3xl text-white" />
+                        <FaEyeSlash className="text-white " />
                       ) : (
-                        <FaEye className="text-3xl text-white" />
+                        <FaEye className="text-white " />
                       )}
                     </button>
                   </motion.div>
-                </motion.div>
-                <motion.button
-                  variants={loginItemsVariants}
-                  className="px-2 py-3 text-2xl font-semibold text-white rounded-full bg-lightRed"
-                >
-                  Register
-                </motion.button>
+                  <motion.button
+                    variants={loginItemsVariants}
+                    type="submit"
+                    disabled={!username || !email || !password}
+                    className="px-2 py-3 text-xl font-semibold text-white rounded-full cursor-pointer bg-lightRed hover:bg-lightRed/80"
+                  >
+                    Register
+                  </motion.button>
+                </motion.form>
                 <motion.p
                   variants={loginItemsVariants}
-                  className="text-center text-white"
+                  className="text-sm text-center text-white"
                 >
                   Sudah punya akun?{" "}
                   <Link to="/login" className="text-red-500">
@@ -173,7 +241,7 @@ const RegisterPage = () => {
             </motion.div>
           </motion.div>
           {/* Welcome */}
-          <div className="z-10 flex flex-col items-start justify-center w-1/2 ">
+          <div className="z-10 flex-col items-start justify-center hidden w-1/2 md:flex ">
             <motion.div
               variants={welcomeVariant}
               initial="in"

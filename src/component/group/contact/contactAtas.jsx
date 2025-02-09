@@ -23,7 +23,7 @@ function Navlist({ open, navVariants }) {
   );
 }
 
-export default function ContactAtas() {
+export default function ContactAtas({ nama, avatar }) {
   const [open, setOpen] = useState(false);
   const navVariants = {
     closed: {
@@ -41,7 +41,7 @@ export default function ContactAtas() {
   };
   return (
     <div className="relative flex items-center justify-between">
-      <Contact nama={"LoneCatz"} />
+      <Contact nama={nama} avatar={avatar} />
       <button
         className="p-2 duration-100 rounded-full lg:hover:bg-surfaces active:ring-2 active:ring-lightBlue"
         onClick={() => setOpen(!open)}

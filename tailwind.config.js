@@ -26,6 +26,7 @@ export default {
       },
       boxShadow: {
         chatShadow: "0 0 10px 0 rgba(0, 0, 0, 0.5)",
+        lightBlueShadow: " 0px 0px 17px 1px rgba(17,102,85,0.49)",
       },
     },
   },
