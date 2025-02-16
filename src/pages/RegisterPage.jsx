@@ -6,7 +6,7 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import { useState } from "react";
 import { MdEmail } from "react-icons/md";
-import { register } from "../service/AuthService";
+import { register } from "../service/authService";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);

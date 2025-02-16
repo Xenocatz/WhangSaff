@@ -3,12 +3,10 @@ import { db, auth, storage } from "../Config/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
-import { useDispatch } from "react-redux";
 
 export const register = async ({ username, email, password, avatar }) => {
   try {

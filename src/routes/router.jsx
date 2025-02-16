@@ -13,11 +13,11 @@ const AppRoutes = () => {
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div key={location.pathname}>
-        <Routes location={location} key={location.pathname}>
+        <Routes location={location}>
           <Route index element={<App />} />
           <Route path="whangsaff" element={<WhangSaff />}>
             <Route index element={<div></div>} />
-            <Route path="chats/:id" element={<ChatsSection />} />
+            <Route path="chats/:username" element={<ChatsSection />} />
           </Route>
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />

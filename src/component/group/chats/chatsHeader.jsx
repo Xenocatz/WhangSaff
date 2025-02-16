@@ -1,9 +1,6 @@
+import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import CurrentChatsProfiles from "../../layout/profiles";
-import { useSelector } from "react-redux";
-import { setUser } from "../../../redux/userSlice";
-import { current } from "@reduxjs/toolkit";
-
 export default function ChatsHeader() {
   const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
   const [userDetailVisible, setUserDetailVisible] = useState(false);

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import defaultAvatar from "../../assets/userProfileIMG/blank-image.png";
 const Contact = ({
   nama,
@@ -8,7 +9,8 @@ const Contact = ({
   onclick,
 }) => {
   return (
-    <div
+    <Link
+      to={`/whangsaff/chats/${nama}`}
       className={`flex gap-2 items-start justify-between px-2 py-3 rounded-xl  ${
         chatList
           ? "lg:hover:bg-lightBlue/5 hover:scale-105 group duration-300"
@@ -32,7 +34,7 @@ const Contact = ({
       <p className="text-xs select-none text-white/75 lg:text-xs">
         {lastMessageTimeStamp}
       </p>
-    </div>
+    </Link>
   );
 };
 

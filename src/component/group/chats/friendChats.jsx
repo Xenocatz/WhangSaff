@@ -7,7 +7,7 @@ export default function FriendChats({ img = "", text = "", time = "" }) {
             <img
               src={img}
               alt=""
-              className="object-cover max-w-full  shadow-chatShadow rounded-md aspect-[1/1] "
+              className="object-contain max-w-full bg-contain rounded-md shadow-chatShadow"
             />
           )}
           <p className="max-w-full p-2 text-sm font-medium rounded-lg text-textForGrey text-wrap ">

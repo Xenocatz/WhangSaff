@@ -18,30 +18,29 @@ export default function ChatsRoom() {
     if (!currentChatRoom) return;
     const unsubscribe = listenToMessages(currentChatRoom.id, setMessages);
 
-    console.log(messages);
     return () => unsubscribe();
   }, [currentChatRoom]);
 
   useEffect(() => {
     scrollToBottom();
-  });
+  }, [currentChatRoom, messages]);
   return (
     <div className="z-10 flex flex-col flex-1 overflow-y-hidden backdrop-blur-xl bg-canvas/10 backdrop-brightness-75 ">
       <div className="flex flex-col h-full px-2 py-2 overflow-y-auto lg:px-10 chat-scrollbar">
         {messages !== null &&
           messages.map((m) =>
-            m.senderId === currentUser.uid ? (
+            m.senderId === currentUser?.uid ? (
               <MyChats
                 key={m.id}
                 text={m.message}
-                img={m.img}
+                img={m.image}
                 time={m.timestamp}
               />
             ) : (
               <FriendChats
                 key={m.id}
                 text={m.message}
-                img={m.img}
+                img={m.image}
                 time={m.timestamp}
               />
             )

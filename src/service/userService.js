@@ -1,3 +1,4 @@
+import imageCompression from "browser-image-compression";
 import {
   collection,
   addDoc,
@@ -12,8 +13,9 @@ import {
   orderBy,
   onSnapshot,
 } from "firebase/firestore";
-import { db } from "../Config/firebase";
+import { db, storage } from "../Config/firebase";
 import { toast } from "react-toastify";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const createChatRoom = async (currentUserId, friendId) => {
   try {
@@ -49,7 +51,7 @@ export const sendMessage = async (
   currentUserId,
   chatRoomId,
   message,
-  avatar = null
+  image = null
 ) => {
   try {
     if (!currentUserId) throw new Error("User not authenticated");
@@ -68,7 +70,27 @@ export const sendMessage = async (
     };
 
     const batch = writeBatch(db);
+    let imageUrl = null;
+    if (image) {
+      // compress image
+      const options = {
+        maxSizeMB: 1,
+        useWebWorker: true,
+      };
+      const compressedFile = await imageCompression(image, options);
 
+      // upload image
+      const imageRef = ref(
+        storage,
+        `media/${chatRoomId}/${currentUserId}/${
+          image.name + " " + formattedDate()
+        }`
+      );
+      await uploadBytes(imageRef, compressedFile);
+
+      // url image
+      imageUrl = await getDownloadURL(imageRef);
+    }
     const messagesRef = collection(db, "chats", chatRoomId, "messages");
     const newMessageRef = doc(
       messagesRef,
@@ -78,7 +100,7 @@ export const sendMessage = async (
     batch.set(newMessageRef, {
       senderId: currentUserId,
       message: message.trim(),
-      avatar: avatar,
+      image: imageUrl,
       timestamp: serverTimestamp(),
     });
 
@@ -115,6 +137,7 @@ export const listenToMessages = (chatRoomId, callback) => {
       ...doc.data(),
       timestamp: translatedTime(doc.data().timestamp),
     }));
+
     callback(messages);
   });
 };
