@@ -125,21 +125,23 @@ export const listenToMessages = (chatRoomId, callback) => {
 
   // terjemahan timeStamp
   const translatedTime = (timestamp) => {
+    if (!timestamp) return "N/A";
     const date = timestamp.toDate();
     const hours = String(date.getHours()).padStart(2, "0");
     const minutes = String(date.getMinutes() + 1).padStart(2, "0");
     return `${hours}:${minutes}`;
   };
 
-  return onSnapshot(q, (querySnapshot) => {
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const messages = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
       timestamp: translatedTime(doc.data().timestamp),
     }));
-
     callback(messages);
   });
+
+  return unsubscribe;
 };
 
 export const findUserByEmail = async (email) => {
@@ -168,7 +170,7 @@ export const getCurrentChatRoom = async (chatRoomId, friendId) => {
     const userData = userSnapshot.data();
     const roomData = {
       ...userData,
-      id: chatRoomId,
+      roomId: chatRoomId,
     };
     return roomData;
   } catch (error) {

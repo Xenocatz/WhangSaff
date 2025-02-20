@@ -1,4 +1,9 @@
-export default function FriendChats({ img = "", text = "", time = "" }) {
+import React from "react";
+export default React.memo(function FriendChats({
+  img = "",
+  text = "",
+  time = "",
+}) {
   return (
     <div className="w-full ">
       <section className="flex items-end w-full gap-2 ">
@@ -18,4 +23,4 @@ export default function FriendChats({ img = "", text = "", time = "" }) {
       </section>
     </div>
   );
-}
+});

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Contact from "../element/contact";
 import ContactAtas from "../group/contact/contactAtas";
 import SearchAndAdd from "../group/contact/searchAndAdd";
@@ -13,24 +13,46 @@ export default function ContactsSection() {
   // selsctor
   const currentUser = useSelector((state) => state.user.currentUser);
   const friends = useSelector((state) => state.friend.friends);
+  const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
 
   const dispatch = useDispatch(); // dispatch
 
-  const handleAddFriend = () => {
+  const handleAddFriend = useCallback(() => {
     setAddFriends(!addFriends);
-  };
+  }, [addFriends]);
 
-  const handleCurrentChatRoom = async (friendId, roomId) => {
-    const currentChatRoom = await getCurrentChatRoom(roomId, friendId);
-    dispatch(setCurrentRoom(currentChatRoom));
-  };
+  const handleCurrentChatRoom = useCallback(
+    async (friendId, roomId) => {
+      if (roomId === currentRoom.roomId) return;
+      const currentChatRoom = await getCurrentChatRoom(roomId, friendId);
+      dispatch(setCurrentRoom(currentChatRoom));
+    },
+    [currentRoom]
+  );
 
   useEffect(() => {
+    if (!currentUser) return;
     if (currentUser) {
       const unsubscribe = dispatch(getFriendList(currentUser.uid));
-      return () => unsubscribe;
+
+      // cleanup
+      if (typeof unsubscribe === "function") return () => unsubscribe();
     }
-  }, [dispatch, currentUser]);
+  }, [currentUser?.uid]);
+
+  const memoizedFriends = useMemo(() => {
+    return friends.map((friend) => (
+      <li key={friend.id}>
+        <Contact
+          nama={friend.username}
+          avatar={friend.avatar}
+          chats={friend.lastMessage}
+          lastMessageTimeStamp={friend.lastMessageTimestamp}
+          onclick={() => handleCurrentChatRoom(friend.id, friend.roomId)}
+        />
+      </li>
+    ));
+  }, [friends, handleCurrentChatRoom]);
 
   return (
     <div className="relative flex flex-col h-full border-r shadow-2xl border-r-lightBlue/25 bg-canvas lg:w-80">
@@ -53,17 +75,7 @@ export default function ContactsSection() {
       )}
       {/* Friend List */}
       <ul className="flex flex-col flex-1 gap-3 px-3 py-2 overflow-y-auto">
-        {friends.map((friend) => (
-          <li key={friend.id}>
-            <Contact
-              nama={friend.username}
-              avatar={friend.avatar}
-              chats={friend.lastMessage}
-              lastMessageTimeStamp={friend.lastMessageTimestamp}
-              onclick={() => handleCurrentChatRoom(friend.id, friend.roomId)}
-            />
-          </li>
-        ))}
+        {memoizedFriends}
       </ul>
     </div>
   );

@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-import ChatsSection from "../component/layout/chatsSection";
 import ContactsSection from "../component/layout/contacts";
 import { useEffect } from "react";
 import { listenToAuthChanges } from "../redux/userSlice";
@@ -10,8 +9,11 @@ export default function WhangSaff() {
 
   // dapetin currentUser
   useEffect(() => {
-    dispatch(listenToAuthChanges());
-  }, [dispatch]);
+    const unsubscribe = dispatch(listenToAuthChanges());
+
+    if (unsubscribe && typeof unsubscribe === "function")
+      return () => unsubscribe();
+  }, []);
 
   const isMobile = window.innerWidth < 1024;
   return (

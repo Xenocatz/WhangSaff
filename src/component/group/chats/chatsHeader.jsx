@@ -26,7 +26,7 @@ export default function ChatsHeader() {
 
   return (
     <div
-      className="relative z-50 flex items-center justify-between h-16 px-5 shadow-2xl shadow-black/50 bg-canvas/10 backdrop-brightness-75 backdrop-blur-xl"
+      className="relative z-50 flex items-center justify-between h-16 px-5 shadow-2xl shadow-black/50 bg-canvas"
       onClick={handleUserDetail}
     >
       {userDetailVisible && <CurrentChatsProfiles ref={userDetailRef} />}

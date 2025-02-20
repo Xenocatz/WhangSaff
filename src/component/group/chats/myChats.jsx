@@ -1,4 +1,6 @@
-export default function MyChats({ img = "", text = "", time = "" }) {
+import React from "react";
+
+export default React.memo(function MyChats({ img = "", text = "", time = "" }) {
   return (
     <div className="w-full ">
       <section className="flex flex-row-reverse items-end w-full gap-2 ">
@@ -18,4 +20,4 @@ export default function MyChats({ img = "", text = "", time = "" }) {
       </section>
     </div>
   );
-}
+});

@@ -1,40 +1,58 @@
 import FriendChats from "./friendChats";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ChatsInput from "./chatsInput";
-import { listenToMessages } from "../../../service/userService";
 import { useSelector } from "react-redux";
 import MyChats from "./myChats";
+import { listenToMessages } from "../../../service/userService";
 
 export default function ChatsRoom() {
-  const [messages, setMessages] = useState(null);
-  const currentChatRoom = useSelector((state) => state.currentRoom.currentRoom);
+  // selector
   const currentUser = useSelector((state) => state.user.currentUser);
+  const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
+  // state
+  const [messages, setMessages] = useState(null);
+  // ref
   const endaRef = useRef(null);
+  const userRef = useRef(null);
+  userRef.current = currentUser;
 
-  const scrollToBottom = () => {
-    endaRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  // ngisi messages
   useEffect(() => {
-    if (!currentChatRoom) return;
-    const unsubscribe = listenToMessages(currentChatRoom.id, setMessages);
-
-    return () => unsubscribe();
-  }, [currentChatRoom]);
+    let timeout;
+    let unsubscribe;
+    if (!currentRoom) return;
+    unsubscribe = listenToMessages(currentRoom.roomId, (messages) => {
+      timeout = setTimeout(() => {
+        console.log("listen to messages ");
+        setMessages(messages);
+      }, 500);
+    });
+    return () => {
+      if (unsubscribe) unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, [currentRoom]);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [currentChatRoom, messages]);
+    const timeout = setTimeout(() => {
+      const scrollToBottom = () => {
+        endaRef.current?.scrollIntoView();
+      };
+      scrollToBottom();
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [messages]);
   return (
-    <div className="z-10 flex flex-col flex-1 overflow-y-hidden backdrop-blur-xl bg-canvas/10 backdrop-brightness-75 ">
+    <div className="z-10 flex flex-col flex-1 overflow-y-hidden bg-canvas/10 backdrop-brightness-75 backdrop-blur">
       <div className="flex flex-col h-full px-2 py-2 overflow-y-auto lg:px-10 chat-scrollbar">
-        {messages !== null &&
+        {messages?.length > 0 &&
           messages.map((m) =>
-            m.senderId === currentUser?.uid ? (
+            m.senderId === userRef.current.uid ? (
               <MyChats
                 key={m.id}
                 text={m.message}
                 img={m.image}
-                time={m.timestamp}
+                time={m.timestamp || "N/A"}
               />
             ) : (
               <FriendChats
