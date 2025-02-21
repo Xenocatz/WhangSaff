@@ -17,9 +17,12 @@ export default function WhangSaff() {
 
   const isMobile = window.innerWidth < 1024;
   return (
-    <div className="flex h-screen font-poppins">
-      <ContactsSection />
-      <Outlet />
+    <div>
+      div
+      <div className="flex h-screen font-poppins">
+        <ContactsSection />
+        <Outlet />
+      </div>
     </div>
   );
 }

@@ -55,7 +55,7 @@ export default function ContactsSection() {
   }, [friends, handleCurrentChatRoom]);
 
   return (
-    <div className="relative flex flex-col h-full border-r shadow-2xl border-r-lightBlue/25 bg-canvas lg:w-80">
+    <div className="relative flex flex-col w-full h-full border-r shadow-2xl border-r-lightBlue/25 bg-canvas lg:w-80">
       {/* Profile */}
       <div className="flex flex-col gap-2 px-5 py-3 lg:gap-1 ">
         <ContactAtas
