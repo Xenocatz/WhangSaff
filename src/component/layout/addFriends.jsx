@@ -50,26 +50,28 @@ export default function AddFriends({ currentUser, setAddFriends, addFriends }) {
     }
   };
   return (
-    <section className="z-[99] py-2 absolute top-[140px] -right-[225px] shadow-lightBlueShadow shadow-sky-500/40 rounded-xl flex flex-col w-full  bg-canvas">
+    <section className="absolute top-0 flex flex-col w-full h-full py-2 z-99 -right-0 shadow-lightBlueShadow shadow-sky-500/40 rounded-xl bg-darkbg">
       {/* input email */}
-      <h1 className="px-3 mb-2 text-lg text-white">Temukan teman</h1>
+      <div className="w-full p-5 ">
+        <h1 className="text-2xl font-semibold text-white">Temukan Teman</h1>
+      </div>
       <div className="flex justify-center px-2 ">
-        <div className="flex w-full py-1 overflow-hidden rounded bg-surfaces">
+        <div className="flex w-full overflow-hidden rounded-sm bg-primarylight">
           <input
             ref={ref}
             type="email"
             placeholder="Masukan Email"
             value={inputEmail}
             onChange={(e) => setInputEmail(e.target.value)}
-            className="w-full px-2 text-sm text-white bg-transparent border-r-2 outline-none border-sky-500"
+            className="w-full px-2 text-sm text-white bg-transparent outline-hidden "
             onKeyDown={(e) => e.key === "Enter" && handleSearchUser()}
           />
           <button
             type="button"
             onClick={handleSearchUser}
-            className="px-2 text-2xl text-white bg-transparent hover:bg-slate-600/50"
+            className="p-2 cursor-pointer hover:bg-secondarydark"
           >
-            <MdPersonSearch />
+            <MdPersonSearch className="text-2xl text-white" />
           </button>
         </div>
       </div>
@@ -77,11 +79,13 @@ export default function AddFriends({ currentUser, setAddFriends, addFriends }) {
       {display && friend && (
         <div className="flex flex-col items-center px-3 py-5">
           {/* Profile */}
-          <img
-            className="object-cover w-20 h-20 mb-3 rounded-full"
-            src={friend.avatar}
-            alt=""
-          />
+          <div className="relative p-0 mb-2 rounded-full w-25 h-25 bg-secondarylight/50">
+            <img
+              className="absolute object-cover mb-3 transform -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 w-22 h-22"
+              src={friend.avatar}
+              alt=""
+            />
+          </div>
           <h1 className="text-lg text-white">{friend.username}</h1>
           <h2 className="text-sky-500">{friend.email}</h2>
 
@@ -90,7 +94,7 @@ export default function AddFriends({ currentUser, setAddFriends, addFriends }) {
             {/* cancel */}
             <button
               onClick={handleCancel}
-              className="w-full p-3 text-white rounded-xl bg-slate-500/75 hover:bg-slate-600/50"
+              className="w-full p-3 text-white rounded-xl bg-secondarydark hover:bg-secondarydark/50"
             >
               Gajadi
             </button>
@@ -98,7 +102,7 @@ export default function AddFriends({ currentUser, setAddFriends, addFriends }) {
             {/* add */}
             <button
               onClick={handleAddFriends}
-              className="w-full p-3 text-white rounded-xl bg-lightBlue/60 hover:bg-canvas-600/50"
+              className="w-full p-3 text-white rounded-xl bg-primarylight hover:bg-secondarylight"
             >
               Tambahkan
             </button>

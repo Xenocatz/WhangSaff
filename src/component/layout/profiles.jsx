@@ -16,13 +16,13 @@ const CurrentChatsProfiles = forwardRef((props, ref) => {
       onClick={(e) => e.stopPropagation()}
     >
       {/* kiri */}
-      <div className="px-1 py-3 text-white bg-canvas shadow-lightBlue">
+      <div className="px-1 py-3 text-white bg-primarydark shadow-lightBlue">
         <ul className="space-y-3 ">
-          <li className="flex gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5 hover:bg-lightBlueHover/50">
+          <li className="flex gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5 hover:bg-secondarylight">
             <ImProfile className="mr-2 text-md md:text-lg" />
             Overview
           </li>
-          <li className="flex gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5 hover:bg-lightBlueHover/50">
+          <li className="flex gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5 hover:bg-secondarylight">
             <MdPermMedia className="mr-2 text-md md:text-lg" />
             Media
           </li>

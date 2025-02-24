@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
-import RegisterBg from "../assets/bgChats/bg2.jpg";
+import RegisterBg from "../assets/bgChats/registerbg.svg";
 import InputForm from "../component/element/InputForm";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import { useState } from "react";
 import { MdEmail } from "react-icons/md";
-import { register } from "../service/authService";
+import { register, signInWithGoogle } from "../service/authService";
+import { FcGoogle } from "react-icons/fc";
+import { line } from "framer-motion/client";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -45,9 +47,15 @@ const RegisterPage = () => {
       setAvatar({ file, url });
     }
   };
-  const date = new Date();
-  const handleTest = () => {
-    console.log(date);
+  console.log("width :", window.innerWidth);
+  console.log("height :", window.innerHeight);
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      Navigate("/whangsaff", { replace: true });
+    } catch (error) {
+      toast.error("Error signing in with Google: " + error.message);
+    }
   };
 
   const loginVariant = {
@@ -88,10 +96,11 @@ const RegisterPage = () => {
   };
   return (
     <div className="grid h-full min-h-screen place-items-center font-poppins">
-      <div
-        style={{ backgroundImage: `url(${RegisterBg})` }}
-        className="h-full w-full max-h-[1080px] max-w-[1920px] bg-center bg-cover overflow-hidden shadow-2xl "
-      >
+      <div className="relative h-full w-full max-h-[1080px] max-w-[1920px] bg-center bg-cover overflow-hidden shadow-2xl ">
+        <div
+          className="absolute top-0 left-0 w-full h-full scale-x-[-1] bg-center bg-cover"
+          style={{ backgroundImage: `url(${RegisterBg})` }}
+        />
         <div className="relative flex flex-row-reverse items-center justify-between h-full md:px-20 bg-black/30">
           {/* bg animasi */}
           <motion.div
@@ -110,10 +119,9 @@ const RegisterPage = () => {
               scale: [1.5, 2, 1],
               x: 0,
               y: [0, -600, 0],
-              backgroundColor: "#141d2c",
               transition: { duration: 1, delay: 0.1, ease: "easeInOut" },
             }}
-            className="absolute w-[1920px] h-[1080px] top-0 right-0 bg-darkRed "
+            className="absolute w-[1920px] h-[1080px] top-0 right-0 bg-linear-180/oklch from-primarydark/10 from-20% to-secondarydark "
           ></motion.div>
           {/* register Form */}
           <motion.div className="z-10 flex justify-center w-full md:justify-end md:w-1/2">
@@ -122,11 +130,11 @@ const RegisterPage = () => {
               initial="in"
               animate="stay"
               exit="out"
-              className="flex flex-col w-4/5 gap-10 p-10 rounded-3xl backdrop-blur-lg bg-darkRed/10"
+              className="flex flex-col w-4/5 p-10 rounded-3xl backdrop-blur-lg bg-darkRed/10"
             >
               <motion.h1
                 variants={loginItemsVariants}
-                className="text-4xl font-bold text-center text-white md:text-5xl"
+                className="text-4xl font-bold text-center text-white md:text-4xl"
               >
                 Register
               </motion.h1>
@@ -140,7 +148,7 @@ const RegisterPage = () => {
                 <motion.form
                   variants={loginItemsVariants}
                   onSubmit={handleRegister}
-                  className="flex flex-col w-full mb-5 space-y-16"
+                  className="flex flex-col w-full mb-5 space-y-14"
                 >
                   {/* username */}
                   <motion.div
@@ -166,7 +174,7 @@ const RegisterPage = () => {
                             : "/src/assets/userProfileIMG/blank-image.png"
                         }
                         alt=""
-                        className="object-cover rounded-full shadow-xl w-14 h-14 md:size-20 "
+                        className="object-cover rounded-full shadow-xl w-14 h-14 md:size-16 "
                       />
                     </label>
                     <InputForm
@@ -177,7 +185,7 @@ const RegisterPage = () => {
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                     />
-                    <IoPerson className="absolute right-0 text-2xl text-white top-4 md:top-8 md:text-3xl rounded-xl bg-black/10" />
+                    <IoPerson className="absolute right-0 text-2xl text-white top-4 md:top-8 md:text-2xl rounded-xl bg-black/10" />
                   </motion.div>
                   {/* email */}
                   <motion.div
@@ -237,6 +245,21 @@ const RegisterPage = () => {
                     Login
                   </Link>
                 </motion.p>
+                <hr className="border-white/50" />
+                <motion.p
+                  variants={loginItemsVariants}
+                  className="flex items-center justify-center text-sm text-center text-white/50 md:text-base"
+                >
+                  other method
+                </motion.p>
+                <motion.button
+                  variants={loginItemsVariants}
+                  onClick={handleGoogleLogin}
+                  className="flex items-center justify-center gap-2 px-2 py-2 text-sm font-semibold bg-white rounded-full cursor-pointer text-darkbg md:py-3 md:text-xl hover:bg-white/80"
+                >
+                  <FcGoogle className="text-2xl" />
+                  Sign in with Google
+                </motion.button>
               </motion.div>
             </motion.div>
           </motion.div>

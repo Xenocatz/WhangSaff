@@ -4,7 +4,7 @@ export default function Overview({ currentRoom }) {
   if (!currentRoom) return null;
 
   return (
-    <div className="flex flex-1 pr-1 bg-surfaces">
+    <div className="flex flex-1 pr-1 bg-secondarydarkbg">
       <div className="flex flex-col items-center w-full px-3 py-3 overflow-y-auto scrollbar">
         <img
           src={currentRoom.avatar}
@@ -16,11 +16,11 @@ export default function Overview({ currentRoom }) {
         </h2>
         {/* button VC / TLPN */}
         <div className="flex w-full gap-3 ">
-          <button className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md bg-canvas-600 hover:bg-canvas-600/50">
+          <button className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md bg-secondarylight hover:bg-secondarydark">
             <FiVideo className="text-xl text-white" />
             <span className="text-sm text-white">Video</span>
           </button>
-          <button className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md bg-canvas-600 hover:bg-canvas-600/50">
+          <button className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md bg-secondarylight hover:bg-secondarydark">
             <FiPhone className="text-xl text-white" />
             <span className="text-sm text-white">Voice</span>
           </button>

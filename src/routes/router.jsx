@@ -6,6 +6,33 @@ import WhangSaff from "../pages/WhangSaff";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ChatsSection from "../component/layout/chatsSection";
+import WelcomePage from "../component/layout/welcomePage";
+import { auth } from "../Config/firebase";
+
+import { useState, useEffect } from "react";
+
+const ProtectedRoute = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+        window.location.href = "/login";
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return <div>Loading...</div>;
+  }
+
+  return isAuthenticated ? children : null;
+};
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -15,8 +42,15 @@ const AppRoutes = () => {
       <motion.div key={location.pathname}>
         <Routes location={location}>
           <Route index element={<App />} />
-          <Route path="whangsaff" element={<WhangSaff />}>
-            <Route index element={<div></div>} />
+          <Route
+            path="whangsaff"
+            element={
+              <ProtectedRoute>
+                <WhangSaff />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<WelcomePage />} />
             <Route path="chats/:username" element={<ChatsSection />} />
           </Route>
           <Route path="login" element={<LoginPage />} />

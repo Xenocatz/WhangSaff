@@ -22,7 +22,7 @@ export default function InputForm({
         htmlFor={id}
         className={`absolute ${
           value ? `text-${color}` : "text-white"
-        } top-1 md:text-2xl left-1`}
+        } top-1 md:text-xl left-1`}
       >
         {label}
       </motion.label>
@@ -33,9 +33,9 @@ export default function InputForm({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         required
-        className={`w-full py-2 pr-2 md:text-xl text-white bg-transparent border-b-2 ${
+        className={`w-full py-2 pr-2 md:text-lg text-white bg-transparent border-b-2 ${
           tipe === "login" ? "border-b-lightBlue" : "border-b-lightRed"
-        } focus:outline-none `}
+        } focus:outline-hidden `}
         {...rest}
       />
     </div>

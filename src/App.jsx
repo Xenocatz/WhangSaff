@@ -17,7 +17,7 @@ function App() {
         <Input />
       </div>
       <FormLogin />
-      <button className="p-3 rounded bg-slate-300" onClick={handleLogOut}>
+      <button className="p-3 rounded-sm bg-slate-300" onClick={handleLogOut}>
         Logout
       </button>
       <Link to="/whangsaff">whangsaff</Link>
@@ -35,9 +35,9 @@ const Input = () => {
       <input
         placeholder="masukan text"
         type="text"
-        className="p-3 rounded bg-slate-500"
+        className="p-3 rounded-sm bg-slate-500"
       />
-      <button onClick={handleButtonKirim} className="p-3 rounded bg-slate-300">
+      <button onClick={handleButtonKirim} className="p-3 rounded-sm bg-slate-300">
         kirim
       </button>
     </div>
@@ -70,16 +70,16 @@ const FormLogin = () => {
         placeholder="email"
         onChange={(e) => setEmail(e.target.value)}
         value={email}
-        className="p-3 rounded bg-slate-500"
+        className="p-3 rounded-sm bg-slate-500"
       />
       <input
         type="password"
         placeholder="password"
         onChange={(e) => setPassword(e.target.value)}
         value={password}
-        className="p-3 rounded bg-slate-500"
+        className="p-3 rounded-sm bg-slate-500"
       />
-      <button className="p-3 rounded bg-slate-300">login</button>
+      <button className="p-3 rounded-sm bg-slate-300">login</button>
     </form>
   );
 };

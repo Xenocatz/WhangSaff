@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
-import LoginBg from "../assets/bgChats/bgcmprs.webp";
+import LoginBg from "../assets/bgChats/Polygon Luminary.svg";
 import InputForm from "../component/element/InputForm";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import { useState } from "react";
-import { login } from "../service/AuthService";
+import { login, signInWithGoogle } from "../service/authService";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { listenToAuthChanges } from "../redux/userSlice";
+import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,15 @@ const LoginPage = () => {
       setPassword("");
     } catch (error) {
       toast.error("Error logging in: " + error.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      Navigate("/whangsaff", { replace: true });
+    } catch (error) {
+      toast.error("Error signing in with Google: " + error.message);
     }
   };
 
@@ -74,10 +84,10 @@ const LoginPage = () => {
   return (
     <div className="grid h-full min-h-screen place-items-center font-poppins">
       <div
+        className="h-full w-full max-h-[1080px] max-w-[1920px] overflow-hidden shadow-2xl bg-no-repeat bg-cover"
         style={{ backgroundImage: `url(${LoginBg})` }}
-        className="h-full w-full max-h-[1080px] max-w-[1920px] bg-center bg-cover overflow-hidden shadow-2xl "
       >
-        <div className="relative flex items-center justify-center w-full h-full md:justify-between md:px-20 backdrop-blur-none bg-black/30">
+        <div className="relative flex items-center justify-center w-full h-full md:justify-between md:px-20 backdrop-blur-none">
           {/* bg animasi */}
           <motion.div
             animate={{
@@ -95,10 +105,9 @@ const LoginPage = () => {
               scale: [1.5, 2, 1],
               x: 0,
               y: [0, -600, 0],
-              backgroundColor: "#2a0000",
               transition: { duration: 1, delay: 0.1, ease: "easeInOut" },
             }}
-            className="absolute w-[1920px] h-[1080px] top-0 left-0 bg-canvas "
+            className="absolute w-[1920px] h-[1080px] top-0 left-0 bg-linear-180/oklch from-blueprimarydark/10 from-20% to-bluesecondarydark "
           ></motion.div>
           {/* Login Form */}
           <motion.div className="z-10 flex justify-center w-full md:justify-start md:w-1/2">
@@ -107,11 +116,11 @@ const LoginPage = () => {
               initial="in"
               animate="stay"
               exit="out"
-              className="flex flex-col w-4/5 gap-10 p-10 rounded-3xl backdrop-blur-lg bg-canvas/10"
+              className="flex flex-col w-4/5 gap-10 p-10 rounded-3xl backdrop-blur-lg bg-linear-45/oklch from-blueprimarydark/5 from-20% to-bluesecondarydark/5"
             >
               <motion.h1
                 variants={loginItemsVariants}
-                className="text-4xl font-bold text-center text-white md:text-5xl"
+                className="text-4xl font-bold text-center text-white md:text-4xl"
               >
                 Login
               </motion.h1>
@@ -125,7 +134,7 @@ const LoginPage = () => {
                 <motion.form
                   variants={loginItemsVariants}
                   onSubmit={handleLogin}
-                  className="flex flex-col w-full space-y-20"
+                  className="flex flex-col w-full space-y-14"
                 >
                   {/* Email */}
                   <motion.div
@@ -167,14 +176,16 @@ const LoginPage = () => {
                       )}
                     </button>
                   </motion.div>
+                  {/* button login */}
                   <motion.button
                     variants={loginItemsVariants}
                     type="submit"
-                    className="px-2 py-2 text-lg font-semibold text-white bg-blue-500 rounded-full md:py-3 md:text-2xl"
+                    className="px-2 py-2 text-lg font-semibold text-white rounded-full cursor-pointer bg-blueprimarylight hover:bg-bluesecondarydark md:py-3 md:text-2xl "
                   >
                     Login
                   </motion.button>
                 </motion.form>
+
                 <motion.p
                   variants={loginItemsVariants}
                   className="text-sm text-center text-white md:text-base"
@@ -184,6 +195,23 @@ const LoginPage = () => {
                     Register
                   </Link>
                 </motion.p>
+                <hr className="border-white/50" />
+                <motion.p
+                  variants={loginItemsVariants}
+                  className="flex items-center justify-center text-sm text-center text-white/50 md:text-base"
+                >
+                  other method
+                </motion.p>
+
+                {/* other login */}
+                <motion.button
+                  variants={loginItemsVariants}
+                  onClick={handleGoogleLogin}
+                  className="flex items-center justify-center gap-2 px-2 py-2 text-sm font-semibold bg-white rounded-full cursor-pointer text-darkbg md:py-3 md:text-xl hover:bg-white/80"
+                >
+                  <FcGoogle className="text-2xl" />
+                  Sign in with Google
+                </motion.button>
               </motion.div>
             </motion.div>
           </motion.div>

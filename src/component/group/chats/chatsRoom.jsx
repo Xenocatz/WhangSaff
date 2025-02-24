@@ -43,8 +43,8 @@ export default function ChatsRoom() {
     return () => clearTimeout(timeout);
   }, [messages]);
   return (
-    <div className="z-10 flex flex-col flex-1 overflow-y-hidden bg-canvas/10 backdrop-brightness-75 backdrop-blur">
-      <div className="flex flex-col h-full px-2 py-2 overflow-y-auto lg:px-10 chat-scrollbar">
+    <div className="z-10 flex flex-col justify-between overflow-y-hidden grow-1 bg-canvas/10 backdrop-brightness-75 backdrop-blur-sm">
+      <div className="flex flex-col flex-1 px-2 py-2 overflow-y-auto lg:px-10 chat-scrollbar">
         {messages?.length > 0 &&
           messages.map((m) =>
             m.senderId === userRef.current.uid ? (

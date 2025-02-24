@@ -19,7 +19,7 @@ export default React.memo(function FriendChats({
             {text}
           </p>
         </div>
-        <p className="py-1 text-xs text-textForTime">{time}</p>
+        <p className="py-1 text-xs select-none text-textForTime">{time}</p>
       </section>
     </div>
   );

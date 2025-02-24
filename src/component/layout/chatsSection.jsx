@@ -4,12 +4,7 @@ import bgChat from "../../assets/bgChats/bg1.jpg";
 
 export default function ChatsSection() {
   return (
-    <section
-      className="relative top-0 right-0 z-10 flex flex-col w-full h-screen bg-no-repeat bg-cover lg:relative lg:flex-1 "
-      style={{
-        backgroundImage: `url(${bgChat})`,
-      }}
-    >
+    <section className="container relative z-10 flex flex-col w-full h-full bg-no-repeat bg-cover bg-darkbg">
       <ChatsHeader />
       <ChatsRoom />
     </section>

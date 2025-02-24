@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { auth, db } from "../Config/firebase";
+import { auth, database, db } from "../Config/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
+import { onDisconnect, ref, set, update } from "firebase/database";
 
 const userSlice = createSlice({
   name: "user",
@@ -24,8 +25,23 @@ export const { setUser, clearUser } = userSlice.actions;
 export default userSlice.reducer;
 
 export const listenToAuthChanges = () => (dispatch) => {
-  onAuthStateChanged(auth, async (currentUser) => {
+  const updateStatusUser = (userId) => {
+    const statusRef = ref(database, `status/${userId}`);
+
+    update(statusRef, {
+      online: true,
+      lastSeen: null,
+    });
+
+    onDisconnect(statusRef).set({
+      online: false,
+      lastSeen: Date.now(),
+    });
+  };
+
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
     if (currentUser) {
+      updateStatusUser(currentUser.uid);
       const userRef = doc(db, "users", currentUser.uid);
       const userSnap = await getDoc(userRef);
 
@@ -34,4 +50,6 @@ export const listenToAuthChanges = () => (dispatch) => {
       dispatch(clearUser());
     }
   });
+
+  return unsubscribe;
 };

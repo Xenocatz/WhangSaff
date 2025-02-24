@@ -170,6 +170,7 @@ export const getCurrentChatRoom = async (chatRoomId, friendId) => {
     const userData = userSnapshot.data();
     const roomData = {
       ...userData,
+      friendId: friendId,
       roomId: chatRoomId,
     };
     return roomData;

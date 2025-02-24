@@ -1,9 +1,10 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db, auth, storage } from "../Config/firebase";
+import { db, auth, storage, googleProvider } from "../Config/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
 import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
@@ -89,5 +90,23 @@ export const login = async ({ email, password }) => {
         toast.error("Gagal login. Silakan coba lagi.");
         console.error("Error:", error.message);
     }
+  }
+};
+
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+
+    await setDoc(doc(db, "users", user.uid), {
+      username: user.displayName,
+      email: user.email,
+      avatar: user.photoURL,
+      description: "Woy der, I'm using Whangsaff",
+    });
+    console.log(user);
+    toast.success(`Welcome back, ${user.email}!`);
+  } catch (error) {
+    console.error(error);
   }
 };

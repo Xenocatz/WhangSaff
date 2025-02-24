@@ -1,7 +1,60 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap")
+layer(base);
+@import "tailwindcss";
+
+@config '../tailwind.config.js';
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@theme {
+  --font-poppins: Poppins, sans-serif;
+
+  --color-mediumDark: #98de4f;
+  --color-lessDark: #787f99;
+  --color-textForDarkBlue: #f2eeec;
+  --color-textForGrey: #eeeeee;
+  --color-textForTime: #a1a1a1;
+  --color-canvas: #141d2c;
+  --color-canvas-200: #ccd9eb;
+  --color-canvas-600: #365e93;
+  --color-surfaces: #243346;
+  --color-lightBlue: #84e8ff;
+  --color-lightBlueHover: #00d8dd;
+  --color-darkBlue: #064185;
+  --color-chatBg: #0061e3;
+  --color-lightRed: #b00000;
+  --color-darkRed: #2a0000;
+
+  /* red theme */
+  --color-darkbg: #262626;
+  --color-secondarydarkbg: #1c2326;
+  --color-primarylight: #8c030e;
+  --color-secondarylight: #8c1f28;
+  --color-primarydark: #401a21;
+  --color-secondarydark: #591623;
+
+  /* blue theme */
+  --color-bluedarkbg: #010d26;
+  --color-blueprimarydark: #021f59;
+  --color-bluesecondarydark: #03318c;
+  --color-blueprimarylight: #0460d9;
+}
 
 .chatBg {
   background: radial-gradient(ellipse at 38% 0%, #055e68, #272727);
