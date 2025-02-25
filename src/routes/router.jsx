@@ -8,20 +8,15 @@ import RegisterPage from "../pages/RegisterPage";
 import ChatsSection from "../component/layout/chatsSection";
 import WelcomePage from "../component/layout/welcomePage";
 import { auth } from "../Config/firebase";
-
 import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-        window.location.href = "/login";
-      }
+      setIsAuthenticated(user ? true : false);
     });
 
     return () => unsubscribe();
@@ -31,7 +26,7 @@ const ProtectedRoute = ({ children }) => {
     return <div>Loading...</div>;
   }
 
-  return isAuthenticated ? children : null;
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 const AppRoutes = () => {
