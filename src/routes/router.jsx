@@ -41,9 +41,8 @@ const AppRoutes = () => {
     <AnimatePresence mode="wait" initial={false}>
       <motion.div key={location.pathname}>
         <Routes location={location}>
-          <Route index element={<App />} />
           <Route
-            path="whangsaff"
+            path="/"
             element={
               <ProtectedRoute>
                 <WhangSaff />

@@ -1,7 +1,12 @@
 import { FiPhone, FiVideo } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 export default function Overview({ currentRoom }) {
   if (!currentRoom) return null;
+
+  const handleUnDevelopmentFitur = () => {
+    toast.info("Fitur belum tersedia");
+  };
 
   return (
     <div className="flex flex-1 pr-1 bg-secondarydarkbg">
@@ -16,11 +21,17 @@ export default function Overview({ currentRoom }) {
         </h2>
         {/* button VC / TLPN */}
         <div className="flex w-full gap-3 ">
-          <button className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md bg-secondarylight hover:bg-secondarydark">
+          <button
+            onClick={handleUnDevelopmentFitur}
+            className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md cursor-pointer bg-secondarylight hover:bg-secondarydark"
+          >
             <FiVideo className="text-xl text-white" />
             <span className="text-sm text-white">Video</span>
           </button>
-          <button className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md bg-secondarylight hover:bg-secondarydark">
+          <button
+            onClick={handleUnDevelopmentFitur}
+            className="flex flex-col items-center w-full gap-1 px-3 py-2 mt-3 rounded-md cursor-pointer bg-secondarylight hover:bg-secondarydark"
+          >
             <FiPhone className="text-xl text-white" />
             <span className="text-sm text-white">Voice</span>
           </button>
@@ -42,15 +53,24 @@ export default function Overview({ currentRoom }) {
         </div>
         {/* add to favorite */}
         <hr className="w-full mt-5 border-b border-lightBlue/20" />
-        <button className="self-start px-3 py-2 mt-3 text-xs text-white rounded-md bg-canvas-600 hover:bg-canvas-600/50">
+        <button
+          onClick={handleUnDevelopmentFitur}
+          className="self-start px-3 py-2 mt-3 text-xs text-white rounded-md bg-canvas-600 hover:bg-canvas-600/50"
+        >
           Add to favorites
         </button>
         {/* report and block */}
         <div className="flex w-full gap-2 mt-3">
-          <button className="self-start w-full px-3 py-2 mt-3 text-xs font-semibold text-white rounded-md bg-canvas-600 hover:bg-canvas-600/50">
+          <button
+            onClick={handleUnDevelopmentFitur}
+            className="self-start w-full px-3 py-2 mt-3 text-xs font-semibold text-white rounded-md bg-canvas-600 hover:bg-canvas-600/50"
+          >
             Block
           </button>
-          <button className="self-start w-full px-3 py-2 mt-3 mb-2 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700">
+          <button
+            onClick={handleUnDevelopmentFitur}
+            className="self-start w-full px-3 py-2 mt-3 mb-2 text-xs font-semibold text-white bg-red-600 rounded-md hover:bg-red-700"
+          >
             Report
           </button>
         </div>

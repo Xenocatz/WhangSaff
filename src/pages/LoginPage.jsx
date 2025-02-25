@@ -26,7 +26,7 @@ const LoginPage = () => {
 
       if (result) {
         setEmail("");
-        Navigate("/whangsaff", { replace: true });
+        Navigate("/", { replace: true });
         dispatch(listenToAuthChanges());
       }
 
@@ -39,7 +39,7 @@ const LoginPage = () => {
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
-      Navigate("/whangsaff", { replace: true });
+      Navigate("/", { replace: true });
     } catch (error) {
       toast.error("Error signing in with Google: " + error.message);
     }

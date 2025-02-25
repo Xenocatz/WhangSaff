@@ -53,7 +53,7 @@ export default function ContactsSection() {
       <li key={friend.id}>
         <Contact
           nama={friend.username}
-          avatar={friend.avatar}
+          avatar={friend.avatar || defaultAvatar}
           chats={friend.lastMessage}
           lastMessageTimeStamp={friend.lastMessageTimestamp}
           onclick={() => handleCurrentChatRoom(friend.id, friend.roomId)}

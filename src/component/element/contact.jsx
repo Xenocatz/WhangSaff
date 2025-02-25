@@ -5,7 +5,7 @@ const Contact = React.memo(
   ({ nama, chats, isActive, lastMessageTimeStamp, avatar, onclick }) => {
     return (
       <Link
-        to={`/whangsaff/chats/${nama}`}
+        to={`chats/${nama}`}
         className={`relative flex gap-2 items-start justify-between px-4 py-3 rounded-xl duration-200 hover:bg-secondarydark cursor-pointer  overflow-hidden ${
           isActive && "bg-secondarydark"
         }`}
@@ -18,6 +18,8 @@ const Contact = React.memo(
           <img
             src={avatar || defaultAvatar}
             alt=""
+            loading="lazy"
+            referrerPolicy="no-referrer"
             className="object-cover rounded-full select-none h-14 w-14 lg:w-12 lg:h-12"
           />
           <span className="lg:max-w-60 max-w-60 ">

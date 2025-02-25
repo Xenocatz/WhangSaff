@@ -7,7 +7,7 @@ export default React.memo(function FriendChats({
   return (
     <div className="w-full ">
       <section className="flex items-end w-full gap-2 ">
-        <div className="flex flex-col mt-1 max-w-[70%] bg-white/10 shadow-lg backdrop-blur-xl rounded-lg ">
+        <div className="flex flex-col mt-1 max-w-[50%] bg-white/10 shadow-lg backdrop-blur-xl rounded-lg ">
           {img && (
             <img
               src={img}

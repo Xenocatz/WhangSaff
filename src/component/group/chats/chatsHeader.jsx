@@ -90,11 +90,16 @@ const ContactProfile = ({ name, avatar, status }) => {
         <h2 className="text-xl font-bold text-white select-none lg:text-lg lg:font-semibold font-poppins">
           {name}
         </h2>
-        <p className="text-sm text-white/75 ">
-          {status?.online
-            ? "Online"
-            : `Offline - last seen at ${status?.lastSeen}`}
-        </p>
+        <div className="flex items-end justify-center gap-2">
+          <p className="text-sm text-white/75 ">
+            {status?.online ? "Online" : `Offline `}
+          </p>
+          {status?.online === false && status?.lastSeen && (
+            <p className="text-xs text-white/75 ">
+              last seen at {status.lastSeen}
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -19,7 +19,12 @@ export default function ChatsInput() {
 
   const handleSendMessage = async () => {
     if (message.trim() !== "" || img.file !== null) {
-      await sendMessage(currentUser.uid, currentRoom.roomId, message, img.file);
+      await sendMessage(
+        currentUser.uid,
+        currentRoom.roomId,
+        message.trim(),
+        img.file
+      );
       setMessage("");
       setImg({ file: null, url: null });
     }

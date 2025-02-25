@@ -12,6 +12,7 @@ import {
   getDoc,
   orderBy,
   onSnapshot,
+  updateDoc,
 } from "firebase/firestore";
 import { db, storage } from "../Config/firebase";
 import { toast } from "react-toastify";
@@ -50,13 +51,13 @@ export const createChatRoom = async (currentUserId, friendId) => {
 export const sendMessage = async (
   currentUserId,
   chatRoomId,
-  message,
+  message = "",
   image = null
 ) => {
   try {
     if (!currentUserId) throw new Error("User not authenticated");
-    if (!chatRoomId || !message.trim())
-      throw new Error("Invalid chatRoomId or empty message");
+    if (!chatRoomId || image === null)
+      throw new Error("Invalid chatRoomId or empty message or image");
 
     // format waktu
     const date = new Date();
@@ -99,7 +100,7 @@ export const sendMessage = async (
     // bikin message
     batch.set(newMessageRef, {
       senderId: currentUserId,
-      message: message.trim(),
+      message: message,
       image: imageUrl,
       timestamp: serverTimestamp(),
     });
@@ -144,6 +145,24 @@ export const listenToMessages = (chatRoomId, callback) => {
   return unsubscribe;
 };
 
+export const listenToMedia = (chatRoomId, callback) => {
+  const messagesRef = collection(db, "chats", chatRoomId, "messages");
+  const q = query(messagesRef, orderBy("timestamp", "asc"));
+
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const messages = querySnapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        return data.image ? { id: doc.id, img: data.image } : null;
+      })
+      .filter((msg) => msg !== null);
+
+    callback(messages);
+  });
+
+  return unsubscribe;
+};
+
 export const findUserByEmail = async (email) => {
   try {
     const usersRef = collection(db, "users");
@@ -176,5 +195,15 @@ export const getCurrentChatRoom = async (chatRoomId, friendId) => {
     return roomData;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const updateProfile = async (userId, data) => {
+  try {
+    const userRef = doc(db, "users", userId);
+    await updateDoc(userRef, data);
+    toast.success("Profile updated successfully.");
+  } catch (error) {
+    toast.error("Error updating profile: " + error.message);
   }
 };

@@ -5,6 +5,7 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import { auth } from "../../Config/firebase";
 import { Link } from "react-router-dom";
 import defaultAvatar from "../../assets/userProfileIMG/blank-image.png";
+import { toast } from "react-toastify";
 
 export default function Settings() {
   const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
@@ -21,12 +22,15 @@ export default function Settings() {
         <h1 className="text-2xl font-semibold select-none">Settings</h1>
       </div>
 
-      <SettingsComponent
+      {/* <SettingsComponent
         header="Account"
         children={<MdAccountCircle className="text-3xl " />}
-      />
+      /> */}
       <SettingsComponent
         header="Color Theme"
+        onclick={() => {
+          toast.info("Fitur sedang dalam pengembangan");
+        }}
         children={<IoIosColorPalette className="text-3xl " />}
       />
       <Link to="/login">
