@@ -58,7 +58,8 @@ export default function ContactsSection() {
           lastMessageTimeStamp={friend.lastMessageTimestamp}
           onclick={() => handleCurrentChatRoom(friend.id, friend.roomId)}
           isActive={
-            friend.roomId === currentRoom.roomId && username === friend.username
+            friend?.roomId === currentRoom?.roomId &&
+            username === friend?.username
           }
         />
       </li>
