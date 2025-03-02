@@ -31,7 +31,7 @@ export default function ContactsSection() {
 
   const handleCurrentChatRoom = useCallback(
     async (friendId, roomId) => {
-      if (roomId === currentRoom.roomId) return;
+      if (roomId === currentRoom?.roomId) return;
       const currentChatRoom = await getCurrentChatRoom(roomId, friendId);
       dispatch(setCurrentRoom(currentChatRoom));
     },
