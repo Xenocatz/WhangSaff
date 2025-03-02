@@ -22,7 +22,6 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const result = await login({ email, password });
-      console.log("Login result:", result);
 
       if (result) {
         setEmail("");

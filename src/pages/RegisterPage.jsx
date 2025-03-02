@@ -47,8 +47,6 @@ const RegisterPage = () => {
       setAvatar({ file, url });
     }
   };
-  console.log("width :", window.innerWidth);
-  console.log("height :", window.innerHeight);
   const handleGoogleLogin = async () => {
     try {
       await signInWithGoogle();
