@@ -5,14 +5,13 @@ import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCXukgq13F_oFtFGdB-4Ki3v4OBDRNJdtc",
-  authDomain: "whangsaff-67976.firebaseapp.com",
-  databaseURL:
-    "https://whangsaff-67976-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "whangsaff-67976",
-  storageBucket: "whangsaff-67976.appspot.com",
-  messagingSenderId: "896713345913",
-  appId: "1:896713345913:web:8b5e41146730383e6dbda8",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = initializeApp(firebaseConfig);
