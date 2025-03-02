@@ -1,15 +1,14 @@
+import { auth } from "../Config/firebase";
+import { useState, useEffect } from "react";
+import { Navigate } from "react-router-dom";
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import App from "../App";
 import WhangSaff from "../pages/WhangSaff";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import ChatsSection from "../component/layout/chatsSection";
 import WelcomePage from "../component/layout/welcomePage";
-import { auth } from "../Config/firebase";
-import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);

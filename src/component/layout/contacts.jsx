@@ -1,19 +1,21 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Contact from "../element/contact";
-import defaultAvatar from "../../assets/userProfileIMG/blank-image.png";
-import SearchBar from "../group/contact/searchAndAdd";
-import AddFriends from "./addFriends";
 import { useDispatch, useSelector } from "react-redux";
 import { getFriendList } from "../../redux/friendSlice";
 import { getCurrentChatRoom } from "../../service/userService";
 import { setCurrentRoom } from "../../redux/currentRoomSlice";
+import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 import { IoMdPersonAdd } from "react-icons/io";
 import { MdOutlineSettings } from "react-icons/md";
-import { toast } from "react-toastify";
 import { BiMessageDetail } from "react-icons/bi";
+import SearchBar from "../group/contact/searchAndAdd";
+import AddFriends from "./addFriends";
+import Contact from "../element/contact";
 import Settings from "./setting";
-import { useParams } from "react-router-dom";
+import defaultAvatar from "../../assets/userProfileIMG/blank-image.png";
 import ProfilePage from "./profilePage";
+import WhangSaffIcon from "../../assets/png/bubleChat.png";
+import deepseekIcon from "../../assets/svg-icon/deepseek-logo-icon.svg";
 
 export default function ContactsSection() {
   // state
@@ -102,11 +104,7 @@ export default function ContactsSection() {
       <div className="flex flex-col justify-between px-2 py-9 bg-secondarydarkbg">
         <div className="flex flex-col items-center gap-5">
           {/* logo */}
-          <img
-            src="/src/assets/png/bubleChat.png"
-            alt=""
-            className="w-10 select-none"
-          />
+          <img src={WhangSaffIcon} alt="" className="w-10 select-none" />
           {/* message */}
           <button
             type="button"
@@ -137,7 +135,7 @@ export default function ContactsSection() {
             className="w-10 cursor-pointer select-none"
             onClick={handleUndevelopmentFitur}
           >
-            <img src="/src/assets/svg icon/deepseek-logo-icon.svg" alt="" />
+            <img src={deepseekIcon} alt="" />
           </button>
         </div>
         <div className="flex flex-col items-center gap-5">

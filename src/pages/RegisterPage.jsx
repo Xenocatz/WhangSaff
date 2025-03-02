@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
 import RegisterBg from "../assets/bgChats/registerbg.svg";
 import InputForm from "../component/element/InputForm";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import { useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { register, signInWithGoogle } from "../service/authService";
 import { FcGoogle } from "react-icons/fc";
-import { line } from "framer-motion/client";
+import DefaultAvatar from "../assets/userProfileIMG/blank-image.png";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,13 +23,15 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      if (!username || !email || !password || !avatar.file) {
-        alert("Please fill all fields and upload an avatar.");
+      if (!username || !email || !password || !avatar?.file) {
+        toast.error("Please fill all fields and upload an avatar.");
         return;
       }
 
       const result = await register({ username, email, password, avatar });
-      console.log("Registration result:", result);
+      if (!result) {
+        throw new Error("Registration failed");
+      }
 
       Navigate("/login", { replace: true });
       setUsername("");
@@ -36,7 +39,8 @@ const RegisterPage = () => {
       setPassword("");
       setAvatar({ file: null, url: null });
     } catch (error) {
-      alert("Error registering user: " + error.message);
+      console.error("Error registering user:", error);
+      toast.error("Error registering user: " + error.message);
     }
   };
 
@@ -166,11 +170,7 @@ const RegisterPage = () => {
                         hidden
                       />
                       <img
-                        src={
-                          avatar.url
-                            ? avatar.url
-                            : "/src/assets/userProfileIMG/blank-image.png"
-                        }
+                        src={avatar.url ? avatar.url : DefaultAvatar}
                         alt=""
                         className="object-cover rounded-full shadow-xl w-14 h-14 md:size-16 "
                       />
