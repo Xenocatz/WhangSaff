@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
-import CurrentChatsProfiles from "../../layout/profiles";
 import { onValue, ref } from "firebase/database";
 import { database } from "../../../Config/firebase";
+import CurrentChatsProfiles from "../../layout/profiles";
+import defaultAvatar from "../../../assets/userProfileIMG/blank-image.png";
 export default function ChatsHeader() {
   const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
   const [userDetailVisible, setUserDetailVisible] = useState(false);
@@ -82,7 +83,7 @@ const ContactProfile = ({ name, avatar, status }) => {
   return (
     <div className="flex items-center gap-3 px-5 py-3 ">
       <img
-        src={avatar}
+        src={avatar ? avatar : defaultAvatar}
         alt=""
         className="object-cover rounded-full shadow-2xl w-14 h-14 "
       />
@@ -91,9 +92,11 @@ const ContactProfile = ({ name, avatar, status }) => {
           {name}
         </h2>
         <div className="flex items-end justify-center gap-2">
-          <p className="text-sm text-white/75 ">
-            {status?.online ? "Online" : `Offline `}
-          </p>
+          {status?.online !== null && (
+            <p className="text-sm text-white/75 ">
+              {status?.online ? "Online" : `Offline `}
+            </p>
+          )}
           {status?.online === false && status?.lastSeen && (
             <p className="text-xs text-white/75 ">
               last seen at {status.lastSeen}
