@@ -36,9 +36,9 @@ export const getFriendList = (currentUserId) => (dispatch) => {
 
       // terjemahan timeStamp
       const translatedTime = (timestamp) => {
-        const date = timestamp.toDate();
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes() + 1).padStart(2, "0");
+        const date = timestamp?.toDate();
+        const hours = String(date?.getHours()).padStart(2, "0");
+        const minutes = String(date?.getMinutes() + 1).padStart(2, "0");
         return `${hours}:${minutes}`;
       };
 

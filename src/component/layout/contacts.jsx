@@ -15,7 +15,7 @@ import Settings from "./setting";
 import defaultAvatar from "../../assets/userProfileIMG/blank-image.png";
 import ProfilePage from "./profilePage";
 import WhangSaffIcon from "../../assets/png/bubleChat.png";
-import deepseekIcon from "../../assets/svg icon/deepseek-logo-icon.svg";
+import GeminiIcon from "../../assets/png/BrandLogo.org-Gemini-Icon.png";
 
 export default function ContactsSection() {
   const [viewMode, setViewMode] = useState("message");
@@ -95,10 +95,10 @@ export default function ContactsSection() {
           </button>
 
           <button
-            className="w-10 cursor-pointer select-none"
+            className="cursor-pointer select-none w-9"
             onClick={handleUndevelopmentFitur}
           >
-            <img src={deepseekIcon} alt="" />
+            <img src={GeminiIcon} alt="" />
           </button>
         </div>
 

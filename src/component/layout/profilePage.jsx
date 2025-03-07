@@ -4,7 +4,6 @@ import { MdEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { useRef, useState } from "react";
 import { updateProfile } from "../../service/userService";
-import { set } from "firebase/database";
 import { setUser } from "../../redux/userSlice";
 
 export default function ProfilePage() {

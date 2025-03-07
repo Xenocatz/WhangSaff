@@ -20,6 +20,8 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const createChatRoom = async (currentUserId, friendId) => {
   try {
+    if (!currentUserId) throw new Error("User not authenticated");
+    if (currentUserId === friendId) throw new Error("Same user ID provided");
     // bikin chatRoomId
     const createChatsRoomId = (userId1, userId2) => {
       return userId1 < userId2
@@ -41,7 +43,6 @@ export const createChatRoom = async (currentUserId, friendId) => {
     }
     await sendMessage(currentUserId, chatRoomId, "P!");
     // default message
-    console.log("Chat room created with ID:", chatRoomId);
     return chatRoomId;
   } catch (error) {
     console.error("Error creating chat room:", error);

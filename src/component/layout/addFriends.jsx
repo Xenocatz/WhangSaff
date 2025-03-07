@@ -4,7 +4,7 @@ import { createChatRoom, findUserByEmail } from "../../service/userService";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-export default function AddFriends({ currentUser, setAddFriends, addFriends }) {
+export default function AddFriends({ currentUser, setViewMode }) {
   const [inputEmail, setInputEmail] = useState("");
   const [friend, setFriend] = useState({
     avatar: "",
@@ -15,10 +15,10 @@ export default function AddFriends({ currentUser, setAddFriends, addFriends }) {
 
   const ref = useRef(null);
   useEffect(() => {
-    if (addFriends) {
+    if (setViewMode === "addFriends") {
       ref.current.focus();
     }
-  }, [addFriends]);
+  }, [setViewMode]);
   const handleSearchUser = async () => {
     if (inputEmail !== "") {
       const user = await findUserByEmail(inputEmail);
@@ -39,9 +39,11 @@ export default function AddFriends({ currentUser, setAddFriends, addFriends }) {
 
   const handleAddFriends = () => {
     try {
+      if (currentUser.uid === friend.id)
+        return toast.error("Tidak bisa menambahkan diri sendiri");
       createChatRoom(currentUser.uid, friend.id);
 
-      setAddFriends(false);
+      setViewMode("message");
       toast.success("Berhasil menambahkan teman");
     } catch (error) {
       toast.error(error.message);
