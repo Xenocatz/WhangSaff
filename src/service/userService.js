@@ -56,7 +56,7 @@ export const sendMessage = async (
 ) => {
   try {
     if (!currentUserId) throw new Error("User not authenticated");
-    if (!chatRoomId || image === null)
+    if (!chatRoomId && message === "" && image === null)
       throw new Error("Invalid chatRoomId or empty message or image");
 
     // format waktu

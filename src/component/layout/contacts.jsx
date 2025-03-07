@@ -15,19 +15,15 @@ import Settings from "./setting";
 import defaultAvatar from "../../assets/userProfileIMG/blank-image.png";
 import ProfilePage from "./profilePage";
 import WhangSaffIcon from "../../assets/png/bubleChat.png";
-import deepseekIcon from "../../assets/svg-icon/deepseek-logo-icon.svg";
+import deepseekIcon from "../../assets/svg icon/deepseek-logo-icon.svg";
 
 export default function ContactsSection() {
-  // state
-  const [addFriends, setAddFriends] = useState(false);
-  const [toggleSettings, setToggleSettings] = useState(false);
-  const [toggleProfile, setToggleProfile] = useState(false);
-  // selsctor
+  const [viewMode, setViewMode] = useState("message");
+
   const currentUser = useSelector((state) => state.user.currentUser);
   const friends = useSelector((state) => state.friend.friends);
   const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
 
-  // dispatch
   const dispatch = useDispatch();
   const { username } = useParams();
 
@@ -37,18 +33,15 @@ export default function ContactsSection() {
       const currentChatRoom = await getCurrentChatRoom(roomId, friendId);
       dispatch(setCurrentRoom(currentChatRoom));
     },
-    [currentRoom]
+    [dispatch]
   );
 
   useEffect(() => {
-    if (!currentUser) return;
-    if (currentUser) {
-      const unsubscribe = dispatch(getFriendList(currentUser.uid));
+    if (!currentUser?.uid) return;
+    const unsubscribe = dispatch(getFriendList(currentUser.uid));
 
-      // cleanup
-      if (typeof unsubscribe === "function") return () => unsubscribe();
-    }
-  }, [currentUser?.uid]);
+    return typeof unsubscribe === "function" ? () => unsubscribe() : undefined;
+  }, [currentUser?.uid, dispatch]);
 
   const memoizedFriends = useMemo(() => {
     return friends.map((friend) => (
@@ -66,71 +59,41 @@ export default function ContactsSection() {
         />
       </li>
     ));
-  }, [friends, handleCurrentChatRoom]);
+  }, [friends, currentRoom, username, handleCurrentChatRoom]);
 
   const handleUndevelopmentFitur = (e) => {
     e.preventDefault();
     toast.info("Fitur sedang dalam pengembangan");
   };
 
-  // toggle handle
-  const handleAddFriend = useCallback(() => {
-    setToggleSettings(false);
-    setToggleProfile(false);
-    setAddFriends(true);
-  }, [addFriends]);
-
-  const handleSettings = useCallback(() => {
-    setAddFriends(false);
-    setToggleProfile(false);
-    setToggleSettings(true);
-  }, []);
-
-  const handleProfile = useCallback(() => {
-    setAddFriends(false);
-    setToggleSettings(false);
-    setToggleProfile(true);
-  }, []);
-
-  const handleMessage = () => {
-    setAddFriends(false);
-    setToggleSettings(false);
-    setToggleProfile(false);
-  };
-
   return (
     <aside className="flex w-150">
-      {/* sidebar nav */}
       <div className="flex flex-col justify-between px-2 py-9 bg-secondarydarkbg">
         <div className="flex flex-col items-center gap-5">
-          {/* logo */}
           <img src={WhangSaffIcon} alt="" className="w-10 select-none" />
-          {/* message */}
+
           <button
             type="button"
             title="message"
             className={`p-2 text-2xl text-white rounded-lg shadow-lg cursor-pointer duration-200 ${
-              !addFriends &&
-              !toggleSettings &&
-              !toggleProfile &&
-              "bg-secondarylight"
+              viewMode === "message" && "bg-secondarylight"
             }`}
-            onClick={handleMessage}
+            onClick={() => setViewMode("message")}
           >
             <BiMessageDetail />
           </button>
-          {/* add friend */}
+
           <button
             type="button"
             title="add friend"
-            className={`p-2 text-2xl text-white rounded-lg shadow-lg cursor-pointer  duration-200 ${
-              addFriends && "bg-secondarylight"
+            className={`p-2 text-2xl text-white rounded-lg shadow-lg cursor-pointer duration-200 ${
+              viewMode === "addFriends" && "bg-secondarylight"
             }`}
-            onClick={handleAddFriend}
+            onClick={() => setViewMode("addFriends")}
           >
             <IoMdPersonAdd />
           </button>
-          {/* deepseek */}
+
           <button
             className="w-10 cursor-pointer select-none"
             onClick={handleUndevelopmentFitur}
@@ -138,25 +101,25 @@ export default function ContactsSection() {
             <img src={deepseekIcon} alt="" />
           </button>
         </div>
+
         <div className="flex flex-col items-center gap-5">
-          {/* settings */}
           <button
             type="button"
-            onClick={handleSettings}
+            onClick={() => setViewMode("settings")}
             title="settings"
             className={`p-1 text-2xl text-white rounded-lg shadow-lg cursor-pointer duration-200 ${
-              toggleSettings && "bg-secondarylight"
+              viewMode === "settings" && "bg-secondarylight"
             }`}
           >
             <MdOutlineSettings className="text-3xl text-white" />
           </button>
-          {/* avatar */}
+
           <button
             type="button"
-            onClick={handleProfile}
+            onClick={() => setViewMode("profile")}
             title="profile"
             className={`p-1 text-2xl text-white rounded-full shadow-lg cursor-pointer duration-200 select-none ${
-              toggleProfile && "bg-secondarylight"
+              viewMode === "profile" && "bg-secondarylight"
             }`}
           >
             <img
@@ -170,33 +133,25 @@ export default function ContactsSection() {
       </div>
 
       <div className="relative z-10 flex flex-col w-full pt-5 overflow-hidden shadow-2xl rounded-tl-3xl bg-darkbg lg:w-95">
-        {/* Add Friend */}
-        {addFriends && (
-          <AddFriends
-            currentUser={currentUser}
-            setAddFriends={setAddFriends}
-            addFriends={addFriends}
-          />
+        {viewMode === "addFriends" && (
+          <AddFriends currentUser={currentUser} setViewMode={setViewMode} />
         )}
-        {/* Settings */}
-        {toggleSettings && <Settings />}
-
-        {/* profile */}
-        {toggleProfile && <ProfilePage />}
+        {viewMode === "settings" && <Settings />}
+        {viewMode === "profile" && <ProfilePage />}
 
         <div className="w-full px-6 py-2">
           <h1 className="text-2xl font-semibold text-white select-none">
             Chat
           </h1>
         </div>
-        {/* Search  */}
+
         <div className="px-5 py-3 ">
           <SearchBar
-            addFriend={addFriends}
+            addFriend={viewMode === "addFriends"}
             onclick={handleUndevelopmentFitur}
           />
         </div>
-        {/* Friend List */}
+
         <ul className="flex flex-col flex-1 gap-3 px-3 py-2 overflow-y-auto">
           {memoizedFriends}
         </ul>

@@ -32,8 +32,8 @@ const AppRoutes = () => {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div key={location.pathname}>
+    <motion.div key={location.pathname}>
+      <AnimatePresence mode="wait" initial={false}>
         <Routes location={location}>
           <Route
             path="/"
@@ -49,8 +49,8 @@ const AppRoutes = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
         </Routes>
-      </motion.div>
-    </AnimatePresence>
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
