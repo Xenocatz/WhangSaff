@@ -2,7 +2,6 @@ import { useRef, useState, useEffect } from "react";
 import { MdPersonSearch } from "react-icons/md";
 import { createChatRoom, findUserByEmail } from "../../service/userService";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 
 export default function AddFriends({ currentUser, setViewMode }) {
   const [inputEmail, setInputEmail] = useState("");

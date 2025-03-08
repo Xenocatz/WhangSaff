@@ -8,8 +8,7 @@ import { listenToMedia } from "../../service/userService";
 
 const CurrentChatsProfiles = forwardRef((props, ref) => {
   const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
-  const [toggleOverview, setToggleOverview] = useState(true);
-  const [toggleMedia, setToggleMedia] = useState(false);
+  const [toggle, setToggle] = useState("overview");
   const [media, setMedia] = useState([]);
 
   useEffect(() => {
@@ -23,16 +22,15 @@ const CurrentChatsProfiles = forwardRef((props, ref) => {
         unsubscribe();
       }
     };
-  }, [toggleMedia]);
+  }, [media, currentRoom]);
 
   const handleToggleOverview = () => {
-    if (toggleOverview) return;
-    setToggleOverview(true);
-    setToggleMedia(false);
+    if (toggle === "overview") return;
+    setToggle("overview");
   };
   const handleToggleMedia = () => {
-    setToggleOverview(false);
-    setToggleMedia(true);
+    if (toggle === "media") return;
+    setToggle("media");
   };
 
   return (
@@ -49,7 +47,7 @@ const CurrentChatsProfiles = forwardRef((props, ref) => {
             <button
               onClick={handleToggleOverview}
               className={`flex w-full gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5  cursor-pointer ${
-                toggleOverview && "bg-secondarylight"
+                toggle === "overview" && "bg-secondarylight"
               }`}
             >
               <ImProfile className="mr-2 text-md md:text-lg" />
@@ -60,7 +58,7 @@ const CurrentChatsProfiles = forwardRef((props, ref) => {
             <button
               onClick={handleToggleMedia}
               className={`flex w-full gap-2 px-1 py-2 text-sm duration-150 rounded-md md:px-5 cursor-pointer ${
-                toggleMedia && "bg-secondarylight"
+                toggle === "media" && "bg-secondarylight"
               }`}
             >
               <MdPermMedia className="mr-2 text-md md:text-lg" />
@@ -70,8 +68,8 @@ const CurrentChatsProfiles = forwardRef((props, ref) => {
         </ul>
       </div>
       {/* =========== kanan ============== */}
-      {toggleOverview && <Overview currentRoom={currentRoom} />}
-      {toggleMedia && <Media media={media} />}
+      {toggle === "overview" && <Overview currentRoom={currentRoom} />}
+      {toggle === "media" && <Media media={media} />}
     </div>
   );
 });
