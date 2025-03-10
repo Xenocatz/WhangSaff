@@ -4,12 +4,13 @@ import InputForm from "../component/element/InputForm";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdEmail } from "react-icons/md";
 import { register, signInWithGoogle } from "../service/authService";
 import { FcGoogle } from "react-icons/fc";
 import DefaultAvatar from "../assets/userProfileIMG/blank-image.png";
 import { toast } from "react-toastify";
+import { auth } from "../Config/firebase";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,6 +18,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState({ file: null, url: null });
+  const user = auth?.currentUser;
 
   const Navigate = useNavigate();
 

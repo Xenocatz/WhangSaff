@@ -15,9 +15,11 @@ export default React.memo(function FriendChats({
               className="object-contain max-w-full bg-contain rounded-md shadow-chatShadow"
             />
           )}
-          <p className="max-w-full p-2 text-sm font-medium rounded-lg text-textForGrey text-wrap ">
-            {text}
-          </p>
+          {text && (
+            <p className="max-w-full p-2 text-sm font-medium rounded-lg text-textForGrey text-wrap ">
+              {text}
+            </p>
+          )}
         </div>
         <p className="py-1 text-xs select-none text-textForTime">{time}</p>
       </section>

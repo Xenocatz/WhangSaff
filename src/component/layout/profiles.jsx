@@ -12,17 +12,11 @@ const CurrentChatsProfiles = forwardRef((props, ref) => {
   const [media, setMedia] = useState([]);
 
   useEffect(() => {
-    // if (media.length === 0) return;
     const unsubscribe = listenToMedia(currentRoom.roomId, (media) => {
       setMedia(media);
     });
-    console.log("listen to media ; ", media);
-    return () => {
-      if (typeof unsubscribe === "function") {
-        unsubscribe();
-      }
-    };
-  }, [media, currentRoom]);
+    return () => unsubscribe();
+  }, [currentRoom]);
 
   const handleToggleOverview = () => {
     if (toggle === "overview") return;

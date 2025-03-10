@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.0",
     "@reduxjs/toolkit": "^2.3.0",
     "@tailwindcss/vite": "^4.0.8",
     "browser-image-compression": "^2.0.2",

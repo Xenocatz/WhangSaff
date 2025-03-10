@@ -10,7 +10,7 @@ export default function ChatsRoom() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
   // state
-  const [messages, setMessages] = useState(null);
+  const [messages, setMessages] = useState([]);
   // ref
   const endaRef = useRef(null);
   const userRef = useRef(null);
@@ -25,7 +25,7 @@ export default function ChatsRoom() {
       timeout = setTimeout(() => {
         console.log("listen to messages ");
         setMessages(messages);
-      }, 500);
+      });
     });
     return () => {
       if (unsubscribe) unsubscribe();

@@ -12,9 +12,11 @@ export default React.memo(function MyChats({ img = "", text = "", time = "" }) {
               className="object-contain max-w-full bg-contain rounded-md shadow-chatShadow"
             />
           )}
-          <p className="max-w-full px-2 py-2 text-sm font-medium break-words rounded-lg p- text-textForDarkBlue ">
-            {text}
-          </p>
+          {text && (
+            <p className="max-w-full px-2 py-2 text-sm font-medium break-words rounded-lg text-textForDarkBlue ">
+              {text}
+            </p>
+          )}
         </div>
         <p className="py-1 text-xs select-none text-textForTime">{time}</p>
       </section>

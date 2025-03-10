@@ -4,7 +4,7 @@ import { getFriendList } from "../../redux/friendSlice";
 import { getCurrentChatRoom } from "../../service/userService";
 import { setCurrentRoom } from "../../redux/currentRoomSlice";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IoMdPersonAdd } from "react-icons/io";
 import { MdOutlineSettings } from "react-icons/md";
 import { BiMessageDetail } from "react-icons/bi";
@@ -94,12 +94,9 @@ export default function ContactsSection() {
             <IoMdPersonAdd />
           </button>
 
-          <button
-            className="cursor-pointer select-none w-9"
-            onClick={handleUndevelopmentFitur}
-          >
+          <Link to="gemini" className="cursor-pointer select-none w-9">
             <img src={GeminiIcon} alt="" />
-          </button>
+          </Link>
         </div>
 
         <div className="flex flex-col items-center gap-5">

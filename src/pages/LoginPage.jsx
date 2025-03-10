@@ -39,6 +39,7 @@ const LoginPage = () => {
     try {
       await signInWithGoogle();
       Navigate("/", { replace: true });
+      f;
     } catch (error) {
       toast.error("Error signing in with Google: " + error.message);
     }

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { onValue, ref } from "firebase/database";
 import { database } from "../../../Config/firebase";
 import CurrentChatsProfiles from "../../layout/profiles";
@@ -7,56 +7,66 @@ import defaultAvatar from "../../../assets/userProfileIMG/blank-image.png";
 export default function ChatsHeader() {
   const currentRoom = useSelector((state) => state.currentRoom.currentRoom);
   const [userDetailVisible, setUserDetailVisible] = useState(false);
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState({
+    online: false,
+    lastSeen: "",
+  });
   const userDetailRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (userDetailRef.current && !userDetailRef.current.contains(e.target)) {
-        setUserDetailVisible(false);
-        console.log("click outside");
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-
-    return () => document.removeEventListener("click", handleClickOutside);
+  const handleClickOutside = useCallback((e) => {
+    if (userDetailRef.current && !userDetailRef.current.contains(e.target)) {
+      setUserDetailVisible(false);
+    }
   }, []);
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [handleClickOutside]);
 
-  const formattedDate = (dates) => {
-    const date = new Date(dates);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const hour = String(date.getHours()).padStart(2, "0");
-    const minute = String(date.getMinutes()).padStart(2, "0");
-    return `${day}-${month} ${hour}:${minute}`;
+  const formattedDate = (timestamp) => {
+    if (!timestamp) return "";
+    const date = new Date(timestamp);
+    return new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).format(date);
   };
   useEffect(() => {
     if (!currentRoom?.friendId) return;
 
-    const statusRef = ref(database, `status/${currentRoom.friendId}`);
+    const statusRef = ref(database, `status/${currentRoom?.friendId}`);
 
     const unsubscribe = onValue(statusRef, (snapshot) => {
       const data = snapshot.val();
-
       if (!data) return;
+
+      const lastSeenFormatted = formattedDate(data.lastSeen);
 
       setStatus((prevStatus) => {
         if (
           prevStatus?.online === data.online &&
-          prevStatus.lastSeen === formattedDate(data.lastSeen)
+          prevStatus.lastSeen === lastSeenFormatted
         ) {
           return prevStatus;
         }
 
+        console.log("status updated:", {
+          online: data.online,
+          lastSeen: lastSeenFormatted,
+        });
+
         return {
           online: data.online,
-          lastSeen: formattedDate(data.lastSeen),
+          lastSeen: lastSeenFormatted,
         };
       });
     });
 
     return () => unsubscribe();
-  }, [currentRoom]);
+  }, [currentRoom.friendId]);
 
   const handleUserDetail = (e) => {
     e.stopPropagation();
@@ -87,7 +97,7 @@ const ContactProfile = ({ name, avatar, status }) => {
         alt=""
         className="object-cover rounded-full shadow-2xl w-14 h-14 "
       />
-      <div>
+      <div className="flex flex-col items-start">
         <h2 className="text-xl font-bold text-white select-none lg:text-lg lg:font-semibold font-poppins">
           {name}
         </h2>
@@ -97,7 +107,7 @@ const ContactProfile = ({ name, avatar, status }) => {
               {status?.online ? "Online" : `Offline `}
             </p>
           )}
-          {status?.online === false && status?.lastSeen && (
+          {status?.lastSeen && (
             <p className="text-xs text-white/75 ">
               last seen at {status.lastSeen}
             </p>
