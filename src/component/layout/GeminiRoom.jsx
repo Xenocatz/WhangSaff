@@ -11,6 +11,7 @@ export default function GeminiRoom() {
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const endaRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const savedMessages = localStorage.getItem("geminiHistory");
@@ -19,6 +20,13 @@ export default function GeminiRoom() {
     } else {
       setHistory([{ role: "user", text: "" }]);
     }
+  }, []);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      endaRef.current?.scrollIntoView({ behavior: "smooth" });
+    });
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const handleSendPrompt = async (e) => {
@@ -35,6 +43,7 @@ export default function GeminiRoom() {
     } finally {
       setPrompt("");
       setLoading(false);
+      inputRef.current.focus();
     }
   };
 
@@ -62,9 +71,9 @@ export default function GeminiRoom() {
         </div>
       </header>
       {/* main */}
-      <main className="relative bg-black/30 grow">
+      <main className="relative overflow-hidden bg-black/30 grow">
         {/* chat */}
-        <div className="relative flex flex-col h-full px-10 py-2 overflow-y-auto scrollbar">
+        <div className="relative flex flex-col h-full gap-2 px-20 py-2 overflow-y-auto scrollbar">
           {history.length > 0 &&
             history.map((msg, index) =>
               msg.role === "model" ? (
@@ -73,40 +82,41 @@ export default function GeminiRoom() {
                 <MyChats key={index} text={msg.text} />
               )
             )}
-          <div ref={endaRef} />
-          <button
-            onClick={clearHistory}
-            title="clear history"
-            className="absolute p-2 rounded-full cursor-pointer right-5 bottom-18 bg-primarylight hover:bg-secondarydark"
-          >
-            <MdOutlineDeleteOutline className="text-2xl text-white" />
-          </button>
+          <div ref={endaRef} className="w-full h-5 bg-red-500"></div>
         </div>
         {/* input user */}
-        <div className="absolute bottom-0 w-full px-5 py-2">
-          <form
-            onSubmit={handleSendPrompt}
-            className="flex items-center gap-2 pl-2 overflow-hidden rounded-full bg-darkbg"
-          >
-            <input
-              type="text"
-              placeholder="Tanyakan apapun..."
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              disabled={loading}
-              className="w-full px-3 text-base text-white placeholder:text-white/50 focus:outline-none"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              title="kirim"
-              className="py-3 pl-3 pr-4 bg-transparent border-l-2 cursor-pointer hover:bg-secondarydark border-l-black/20"
-            >
-              <BsFillSendFill className="text-2xl text-white" />
-            </button>
-          </form>
-        </div>
       </main>
+      <div className="relative w-full px-5 py-2 bg-black/30">
+        <button
+          onClick={clearHistory}
+          title="clear history"
+          className="absolute p-2 rounded-full cursor-pointer right-5 bottom-18 bg-primarylight hover:bg-secondarydark"
+        >
+          <MdOutlineDeleteOutline className="text-2xl text-white" />
+        </button>
+        <form
+          onSubmit={handleSendPrompt}
+          className="flex items-center gap-2 pl-2 overflow-hidden rounded-full bg-darkbg"
+        >
+          <input
+            type="text"
+            placeholder="Tanyakan apapun..."
+            ref={inputRef}
+            value={prompt}
+            onChange={(e) => setPrompt(e.target.value)}
+            disabled={loading}
+            className="w-full px-3 text-base text-white placeholder:text-white/50 focus:outline-none"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            title="kirim"
+            className="py-3 pl-3 pr-4 bg-transparent border-l-2 cursor-pointer hover:bg-secondarydark border-l-black/20"
+          >
+            <BsFillSendFill className="text-2xl text-white" />
+          </button>
+        </form>
+      </div>
     </section>
   );
 }
