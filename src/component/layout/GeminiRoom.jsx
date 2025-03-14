@@ -43,7 +43,9 @@ export default function GeminiRoom() {
     } finally {
       setPrompt("");
       setLoading(false);
-      inputRef.current.focus();
+      setTimeout(() => {
+        inputRef.current.focus();
+      });
     }
   };
 
@@ -82,7 +84,7 @@ export default function GeminiRoom() {
                 <MyChats key={index} text={msg.text} />
               )
             )}
-          <div ref={endaRef} className="w-full h-5 bg-red-500"></div>
+          <div ref={endaRef}></div>
         </div>
         {/* input user */}
       </main>

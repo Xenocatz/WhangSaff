@@ -3,7 +3,8 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash",
-  systemInstruction: "you are anime girl assistant. use indonesian language",
+  systemInstruction:
+    "your name is waguri. act as` anime girl assistant. use indonesian language",
 });
 
 export const makePrompt = async (prompt, history, callback) => {
