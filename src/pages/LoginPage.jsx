@@ -37,7 +37,8 @@ const LoginPage = () => {
 
   const handleGoogleLogin = async () => {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      if (!result) return;
       Navigate("/", { replace: true });
       f;
     } catch (error) {

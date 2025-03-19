@@ -105,8 +105,8 @@ export const signInWithGoogle = async () => {
       avatar: user.photoURL,
       description: "Woy der, I'm using Whangsaff",
     });
-    console.log(user);
     toast.success(`Welcome back, ${user.email}!`);
+    return user.accessToken;
   } catch (error) {
     console.error(error);
   }

@@ -10,7 +10,6 @@ import { register, signInWithGoogle } from "../service/authService";
 import { FcGoogle } from "react-icons/fc";
 import DefaultAvatar from "../assets/userProfileIMG/blank-image.png";
 import { toast } from "react-toastify";
-import { auth } from "../Config/firebase";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +51,8 @@ const RegisterPage = () => {
   };
   const handleGoogleLogin = async () => {
     try {
-      await signInWithGoogle();
+      const result = await signInWithGoogle();
+      if (!result) return;
       Navigate("/", { replace: true });
     } catch (error) {
       toast.error("Error signing in with Google: " + error.message);
