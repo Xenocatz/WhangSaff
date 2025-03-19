@@ -200,7 +200,7 @@ const LoginPage = () => {
                   variants={loginItemsVariants}
                   className="flex items-center justify-center text-sm text-center text-white/50 md:text-base"
                 >
-                  other method
+                  metode lain
                 </motion.p>
 
                 {/* other login */}

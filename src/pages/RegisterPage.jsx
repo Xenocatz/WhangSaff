@@ -18,7 +18,6 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState({ file: null, url: null });
-  const user = auth?.currentUser;
 
   const Navigate = useNavigate();
 
@@ -31,9 +30,7 @@ const RegisterPage = () => {
       }
 
       const result = await register({ username, email, password, avatar });
-      if (!result) {
-        throw new Error("Registration failed");
-      }
+      if (!result) return;
 
       Navigate("/login", { replace: true });
       setUsername("");
@@ -250,7 +247,7 @@ const RegisterPage = () => {
                   variants={loginItemsVariants}
                   className="flex items-center justify-center text-sm text-center text-white/50 md:text-base"
                 >
-                  other method
+                  metode lain
                 </motion.p>
                 <motion.button
                   variants={loginItemsVariants}

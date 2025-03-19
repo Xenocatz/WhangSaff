@@ -56,6 +56,7 @@ export const register = async ({ username, email, password, avatar }) => {
     });
 
     toast.success("berhasil register, Login sono!");
+    return user.accessToken;
   } catch (error) {
     console.error(error.message);
     toast.error(error.message);
